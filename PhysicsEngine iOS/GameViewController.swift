@@ -31,6 +31,8 @@ class GameViewController: UIViewController {
         // Configure the view
         self.gameView.backgroundColor = UIColor.black
         
+        self.gameView.rendersContinuously = true
+        
         // Add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         var gestureRecognizers = gameView.gestureRecognizers ?? []

@@ -31,6 +31,8 @@ class GameViewController: NSViewController {
         // Configure the view
         self.gameView.backgroundColor = NSColor.black
         
+        self.gameView.rendersContinuously = true
+        
         // Add a click gesture recognizer
         let clickGesture = NSClickGestureRecognizer(target: self, action: #selector(handleClick(_:)))
         var gestureRecognizers = gameView.gestureRecognizers

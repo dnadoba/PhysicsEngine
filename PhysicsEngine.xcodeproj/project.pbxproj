@@ -34,6 +34,10 @@
 		C182D011225CC09E002CC995 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C182CFC0225CC09E002CC995 /* Assets.xcassets */; };
 		C182D012225CC09E002CC995 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C182CFC0225CC09E002CC995 /* Assets.xcassets */; };
 		C182D013225CC09E002CC995 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C182CFC0225CC09E002CC995 /* Assets.xcassets */; };
+		C182D028225CC152002CC995 /* PhysicsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C182D027225CC152002CC995 /* PhysicsEngine.swift */; };
+		C182D029225CC152002CC995 /* PhysicsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C182D027225CC152002CC995 /* PhysicsEngine.swift */; };
+		C182D02A225CC152002CC995 /* PhysicsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C182D027225CC152002CC995 /* PhysicsEngine.swift */; };
+		C182D02B225CC152002CC995 /* PhysicsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C182D027225CC152002CC995 /* PhysicsEngine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +109,7 @@
 		C182D002225CC09E002CC995 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		C182D005225CC09E002CC995 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C182D007225CC09E002CC995 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C182D027225CC152002CC995 /* PhysicsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +163,7 @@
 				C182CFBE225CC09C002CC995 /* GameController.swift */,
 				C182CFBF225CC09C002CC995 /* Art.scnassets */,
 				C182CFC0225CC09E002CC995 /* Assets.xcassets */,
+				C182D027225CC152002CC995 /* PhysicsEngine.swift */,
 			);
 			path = "PhysicsEngine Shared";
 			sourceTree = "<group>";
@@ -425,6 +431,7 @@
 				C182CFCB225CC09E002CC995 /* GameViewController.swift in Sources */,
 				C182D008225CC09E002CC995 /* GameController.swift in Sources */,
 				C182CFC9225CC09E002CC995 /* AppDelegate.swift in Sources */,
+				C182D028225CC152002CC995 /* PhysicsEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,6 +442,7 @@
 				C182CFEA225CC09E002CC995 /* ExtensionDelegate.swift in Sources */,
 				C182D009225CC09E002CC995 /* GameController.swift in Sources */,
 				C182CFE8225CC09E002CC995 /* InterfaceController.swift in Sources */,
+				C182D029225CC152002CC995 /* PhysicsEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,6 +453,7 @@
 				C182CFF5225CC09E002CC995 /* GameViewController.swift in Sources */,
 				C182D00A225CC09E002CC995 /* GameController.swift in Sources */,
 				C182CFF3225CC09E002CC995 /* AppDelegate.swift in Sources */,
+				C182D02A225CC152002CC995 /* PhysicsEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,6 +464,7 @@
 				C182D003225CC09E002CC995 /* GameViewController.swift in Sources */,
 				C182D00B225CC09E002CC995 /* GameController.swift in Sources */,
 				C182D001225CC09E002CC995 /* AppDelegate.swift in Sources */,
+				C182D02B225CC152002CC995 /* PhysicsEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

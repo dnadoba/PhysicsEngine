@@ -19,21 +19,25 @@ import SceneKit
 #endif
 
 class GameController: NSObject, SCNSceneRendererDelegate {
-
+    let physicsEngine: PhysicsEngine = .default
+    let spheres: [SCNNode]
     let scene: SCNScene
     let sceneRenderer: SCNSceneRenderer
     
     init(sceneRenderer renderer: SCNSceneRenderer) {
         sceneRenderer = renderer
-        scene = SCNScene(named: "Art.scnassets/ship.scn")!
+        let scene = SCNScene(named: "Art.scnassets/scene.scn")!
+        self.scene = scene
+        spheres = physicsEngine.spheres.map { sphere -> SCNNode in
+            let geometry = SCNSphere(radius: CGFloat(sphere.radius))
+            let node = SCNNode(geometry: geometry)
+            scene.rootNode.addChildNode(node)
+            return node
+        }
         
         super.init()
         
         sceneRenderer.delegate = self
-        
-        if let ship = scene.rootNode.childNode(withName: "ship", recursively: true) {
-            ship.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
-        }
         
         sceneRenderer.scene = scene
     }
@@ -65,9 +69,18 @@ class GameController: NSObject, SCNSceneRendererDelegate {
             SCNTransaction.commit()
         }
     }
-    
+    var lastUpdateTime: TimeInterval?
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         // Called before each frame is rendered
+        if let lastUpdateTime = self.lastUpdateTime {
+            physicsEngine.update(Δt: time - lastUpdateTime)
+        }
+        lastUpdateTime = time
+        updateSpheresFromPhysicsEngine()
     }
-
+    func updateSpheresFromPhysicsEngine() {
+        for (node, sphere) in zip(spheres, physicsEngine.spheres) {
+            node.simdPosition = SIMD3<Float>(sphere.position)
+        }
+    }
 }
