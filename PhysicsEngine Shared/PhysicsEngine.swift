@@ -16,9 +16,7 @@ struct Sphere {
     var position: Vector
     var velocity: Vector
     let radius: Scalar = 0.5
-}
 
-extension Sphere {
     mutating func update(Δt: TimeInterval, world: World) {
         velocity += world.gravity * Δt
         position += velocity * Δt
@@ -39,7 +37,7 @@ final class PhysicsEngine {
     init(world: World = .earth) {
         self.world = world
         self.spheres = [
-            .init(position: .init(-2,   4,  1), velocity: .zero),
+            Sphere(position: Vector(-2,   4,  1), velocity: Vector(0,0,0)),
             .init(position: .init(0,    5, -1), velocity: .zero),
             .init(position: .init(1,    3,  0), velocity: .zero),
             .init(position: .init(2,    4,  1), velocity: .zero),
