@@ -28,12 +28,28 @@ class GameController: NSObject, SCNSceneRendererDelegate {
         sceneRenderer = renderer
         let scene = SCNScene(named: "Art.scnassets/scene.scn")!
         self.scene = scene
-        spheres = physicsEngine.spheres.map { sphere -> SCNNode in
+        let sphereColors: [SCNColor] = [.red, .orange, .blue, .purple, .yellow, .cyan, .gray, .magenta, .green]
+        spheres = zip(physicsEngine.spheres, 0...).map { (sphere, i) -> SCNNode in
             let geometry = SCNSphere(radius: CGFloat(sphere.radius))
+            
+            let color = sphereColors[i % sphereColors.count]
+            if let material = geometry.firstMaterial {
+                material.lightingModel = .physicallyBased
+                material.metalness.contents = 0.3
+                material.roughness.contents = 0.5
+                material.diffuse.contents = color
+            }
+            
+            
             let node = SCNNode(geometry: geometry)
             scene.rootNode.addChildNode(node)
             return node
         }
+        
+        let floor = SCNNode(geometry: SCNFloor())
+        floor.simdPosition.y = Float(physicsEngine.world.floorHeight)
+        scene.rootNode.addChildNode(floor)
+        
         
         super.init()
         
@@ -71,9 +87,10 @@ class GameController: NSObject, SCNSceneRendererDelegate {
     }
     var lastUpdateTime: TimeInterval?
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        renderer.isPlaying = true
         // Called before each frame is rendered
         if let lastUpdateTime = self.lastUpdateTime {
-            physicsEngine.update(Δt: time - lastUpdateTime)
+            physicsEngine.update(elapsedTime: time - lastUpdateTime)
         }
         lastUpdateTime = time
         updateSpheresFromPhysicsEngine()
