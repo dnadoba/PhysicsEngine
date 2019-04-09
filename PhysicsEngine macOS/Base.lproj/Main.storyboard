@@ -727,6 +727,7 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="IAE-Sa-NoV" secondAttribute="trailing" id="1jp-Ml-re0"/>
                             <constraint firstItem="BOO-VM-wHb" firstAttribute="leading" secondItem="vmu-KV-Wzh" secondAttribute="leading" constant="20" symbolic="YES" id="304-Qd-RkQ"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="BOO-VM-wHb" secondAttribute="trailing" constant="20" symbolic="YES" id="MOJ-fT-5H7"/>
                             <constraint firstItem="BOO-VM-wHb" firstAttribute="top" secondItem="vmu-KV-Wzh" secondAttribute="top" constant="20" symbolic="YES" id="QGR-y8-lEa"/>
                             <constraint firstAttribute="bottom" secondItem="IAE-Sa-NoV" secondAttribute="bottom" id="S3X-11-ArV"/>
                             <constraint firstItem="IAE-Sa-NoV" firstAttribute="leading" secondItem="vmu-KV-Wzh" secondAttribute="leading" id="Vlq-fW-8M1"/>
