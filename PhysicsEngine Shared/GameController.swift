@@ -58,6 +58,10 @@ class GameController: NSObject, SCNSceneRendererDelegate {
         sceneRenderer.scene = scene
     }
     
+    func resetSimulation() {
+        physicsEngine.reset()
+    }
+    
     func highlightNodes(atPoint point: CGPoint) {
         let hitResults = self.sceneRenderer.hitTest(point, options: [:])
         for result in hitResults {

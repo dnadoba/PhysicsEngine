@@ -24,6 +24,9 @@ class InterfaceController: WKInterfaceController {
         let p = gestureRecognizer.locationInObject()
         gameController.highlightNodes(atPoint: p)
     }
+    @IBAction func handleDoubleTap(_ sender: Any) {
+        gameController.resetSimulation()
+    }
     
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user

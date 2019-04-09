@@ -21,6 +21,11 @@
                                         <action selector="handleTap:" destination="AgC-eL-Hgc" id="nce-mF-eMB"/>
                                     </connections>
                                 </tapGestureRecognizer>
+                                <tapGestureRecognizer numberOfTapsRequired="2" id="DD4-j8-XwJ" userLabel="Double Tap Gesture Recognizer">
+                                    <connections>
+                                        <action selector="handleDoubleTap:" destination="AgC-eL-Hgc" id="i5h-Es-Miz"/>
+                                    </connections>
+                                </tapGestureRecognizer>
                             </gestureRecognizers>
                         </sceneKitScene>
                     </items>

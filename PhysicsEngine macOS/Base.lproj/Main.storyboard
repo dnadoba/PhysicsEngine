@@ -706,10 +706,36 @@
         <scene sceneID="hIz-AP-VOD">
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="GameViewController" customModule="PhysicsEngine" customModuleProvider="target" sceneMemberID="viewController">
-                    <sceneView key="view" loops="NO" preferredRenderingAPI="-1" id="RvT-eo-GD2">
+                    <customView key="view" id="vmu-KV-Wzh">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    </sceneView>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <subviews>
+                            <sceneView loops="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IAE-Sa-NoV">
+                                <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                            </sceneView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BOO-VM-wHb">
+                                <rect key="frame" x="14" y="252" width="75" height="32"/>
+                                <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HEs-R7-BI6">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="handleReset:" target="XfG-lQ-9wD" id="wEW-sJ-kPe"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="IAE-Sa-NoV" secondAttribute="trailing" id="1jp-Ml-re0"/>
+                            <constraint firstItem="BOO-VM-wHb" firstAttribute="leading" secondItem="vmu-KV-Wzh" secondAttribute="leading" constant="20" symbolic="YES" id="304-Qd-RkQ"/>
+                            <constraint firstItem="BOO-VM-wHb" firstAttribute="top" secondItem="vmu-KV-Wzh" secondAttribute="top" constant="20" symbolic="YES" id="QGR-y8-lEa"/>
+                            <constraint firstAttribute="bottom" secondItem="IAE-Sa-NoV" secondAttribute="bottom" id="S3X-11-ArV"/>
+                            <constraint firstItem="IAE-Sa-NoV" firstAttribute="leading" secondItem="vmu-KV-Wzh" secondAttribute="leading" id="Vlq-fW-8M1"/>
+                            <constraint firstItem="IAE-Sa-NoV" firstAttribute="top" secondItem="vmu-KV-Wzh" secondAttribute="top" id="o5H-Tt-O0w"/>
+                        </constraints>
+                    </customView>
+                    <connections>
+                        <outlet property="gameView" destination="IAE-Sa-NoV" id="BTU-4d-hnj"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
