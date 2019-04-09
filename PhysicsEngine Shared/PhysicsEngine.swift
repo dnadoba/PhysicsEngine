@@ -76,6 +76,8 @@ final class PhysicsEngine {
             Sphere(position: Vector(0,    5,      0), velocity: .zero),
             Sphere(position: Vector(1,    3,      1), velocity: .zero),
             Sphere(position: Vector(2,    4,      2), velocity: .zero),
+            Sphere(position: Vector(0,    4,      2), velocity: Vector(0.1, 0, 1)),
+            Sphere(position: Vector(-2,   3,    2.5), velocity: Vector(-0.1, 2, 1.5)),
         ]
     }
 }
