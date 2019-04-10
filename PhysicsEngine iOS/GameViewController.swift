@@ -11,7 +11,6 @@ import SceneKit
 
 class GameViewController: UIViewController {
 
-    @IBOutlet weak var gameView: SCNView!
     var gameView: SCNView {
         return self.view as! SCNView
     }
@@ -42,10 +41,6 @@ class GameViewController: UIViewController {
     }
     
     @objc
-    @IBAction func handleReset(_ sender: Any) {
-    }
-    @IBAction func handleReset(_ sender: Any) {
-    }
     func handleTap(_ gestureRecognizer: UIGestureRecognizer) {
         // Highlight the tapped nodes
         let p = gestureRecognizer.location(in: gameView)
