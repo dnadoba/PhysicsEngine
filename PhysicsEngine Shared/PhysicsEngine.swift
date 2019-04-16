@@ -133,11 +133,13 @@ final class PhysicsEngine {
             //                      x     y       z
             Sphere(position: Vector(-2,   4,      2)),
             Sphere(position: Vector(-2.5, 6,      2)),
-            Sphere(position: Vector(0,    5,      0)),
-            Sphere(position: Vector(0,    5,      0.5)),
+            Sphere(position: Vector(0,    5,      -0.3)),
+            Sphere(position: Vector(0,    6,      0.4)),
             Sphere(position: Vector(1,    3,      1)),
             
             Sphere(position: Vector(2,    4,      2)),
+            Sphere(position: Vector(2,    10,      2)),
+            Sphere(position: Vector(2,    12,      2)),
             Sphere(position: Vector(0,    4,      2), velocity: Vector(0.1, 0, 1)),
             Sphere(position: Vector(-2,   3,    2.5), velocity: Vector(-0.1, 2, 1.5)),
         ]

@@ -23,6 +23,7 @@ class GameController: NSObject, SCNSceneRendererDelegate {
     let spheres: [SCNNode]
     let scene: SCNScene
     let sceneRenderer: SCNSceneRenderer
+    var collisionParticleSystem = SCNParticleSystem(named: "SceneKit Particle System.scnp", inDirectory: nil)
     
     init(sceneRenderer renderer: SCNSceneRenderer) {
         sceneRenderer = renderer
@@ -109,7 +110,7 @@ class GameController: NSObject, SCNSceneRendererDelegate {
 
 extension GameController: PhysicsEngineDelegate {
     func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, and other: Sphere, at collisionPoint: Vector) {
-        guard let collisionParticleSystem = SCNParticleSystem(named: "SceneKit Particle System.scnp", inDirectory: nil) else {
+        guard let collisionParticleSystem = collisionParticleSystem else {
             assertionFailure("could not load collision particle system")
             return
         }
@@ -117,5 +118,11 @@ extension GameController: PhysicsEngineDelegate {
         collisionParticleNode.simdPosition = simd_float3(collisionPoint)
         collisionParticleNode.addParticleSystem(collisionParticleSystem)
         scene.rootNode.addChildNode(collisionParticleNode)
+        let duration = collisionParticleSystem.emissionDuration + collisionParticleSystem.emissionDurationVariation + collisionParticleSystem.particleLifeSpan + collisionParticleSystem.particleLifeSpanVariation
+        collisionParticleNode.runAction(SCNAction.sequence([
+            SCNAction.wait(duration: TimeInterval(duration)),
+            SCNAction.removeFromParentNode(),
+        ]))
+        
     }
 }
