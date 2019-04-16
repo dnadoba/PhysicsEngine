@@ -11,10 +11,7 @@ import SceneKit
 
 class GameViewController: NSViewController {
     
-    var gameView: SCNView {
-        return self.view as! SCNView
-    }
-    
+    @IBOutlet weak var gameView: SCNView!
     var gameController: GameController!
     
     override func viewDidLoad() {
@@ -45,6 +42,9 @@ class GameViewController: NSViewController {
         // Highlight the clicked nodes
         let p = gestureRecognizer.location(in: gameView)
         gameController.highlightNodes(atPoint: p)
+    }
+    @IBAction func handleReset(_ sender: Any) {
+        gameController.resetSimulation()
     }
     
 }

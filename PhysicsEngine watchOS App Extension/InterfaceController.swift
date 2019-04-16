@@ -19,10 +19,13 @@ class InterfaceController: WKInterfaceController {
         gameController = GameController(sceneRenderer: scnInterface)
     }
     
-    func handleTap(_ gestureRecognizer: WKTapGestureRecognizer) {
+    @IBAction func handleTap(_ gestureRecognizer: WKTapGestureRecognizer) {
         // Highlight the tapped nodes
         let p = gestureRecognizer.locationInObject()
         gameController.highlightNodes(atPoint: p)
+    }
+    @IBAction func handleDoubleTap(_ sender: Any) {
+        gameController.resetSimulation()
     }
     
     override func willActivate() {
