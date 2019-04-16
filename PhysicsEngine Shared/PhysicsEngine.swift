@@ -12,6 +12,12 @@ import simd
 typealias Scalar = Double
 typealias Vector = SIMD3<Scalar>
 
+extension Vector {
+    func distance(to other: Vector) -> Scalar {
+        return simd_distance(self, other)
+    }
+}
+
 struct Sphere {
     /// position in meter
     var position: Vector
@@ -32,9 +38,21 @@ struct Sphere {
         // collision with floor plane
         if (position.y - radius) < world.floorHeight {
             // reset the position to be above (or on) the floor plane
-            position.y = world.floorHeight + radius
+            let belowFloor = world.floorHeight - (position.y - radius)
+            position.y += belowFloor * 2
             velocity.y *= -1
         }
+    }
+    /// distance between `self` and the `other`
+    ///
+    /// - Parameter other: `Sphere`
+    /// - Returns: distance between `self` and `other`. Can be negative if `self` and `other` overlap
+    func distance(to other: Sphere) -> Scalar {
+        let centerDistance = position.distance(to: other.position)
+        return centerDistance - radius - other.radius
+    }
+    func collides(with other: Sphere) -> Bool {
+        return distance(to: other) <= 0
     }
 }
 
@@ -67,6 +85,19 @@ final class PhysicsEngine {
         let Δt = min(elapsedTime, PhysicsEngine.maximumΔt)
         for i in spheres.indices {
             spheres[i].update(Δt: Δt, world: world)
+        }
+        // check for collisions
+        
+        for i in spheres.indices {
+            // test for collisions with all other spheres
+            for iOther in spheres.indices {
+                // do not test collision with itself
+                if i == iOther { continue }
+                if spheres[i].collides(with: spheres[iOther]) {
+                    // collision detectet
+                    // TODO
+                }
+            }
         }
     }
     func reset() {
