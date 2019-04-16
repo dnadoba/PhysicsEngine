@@ -55,14 +55,12 @@ struct Sphere {
         return distance(to: other) <= 0
     }
     mutating func resolveCollision(with other: inout Sphere, Δt: TimeInterval, world: World) {
-        let nr = other.velocity - self.velocity
+        let nr = other.position - self.position
         
-        let general_vn_s = simd_dot(nr, self.velocity) / (pow(nr.x, 2) + pow(nr.y, 2) + pow(nr.z, 2) )
-        let vn_s = nr * general_vn_s
+        let vn_s = nr * (simd_dot(nr, self.velocity) / (pow(nr.x, 2) + pow(nr.y,2) + pow(nr.z, 2)))
         let ve_s = self.velocity - vn_s
         
-        let general_vn_o = simd_dot(nr, other.velocity) / (pow(nr.x, 2) + pow(nr.y, 2) + pow(nr.z, 2) )
-        let vn_o = nr * general_vn_o
+        let vn_o = nr * (simd_dot(nr, other.velocity) / (pow(nr.x, 2) + pow(nr.y, 2) + pow(nr.z, 2)))
         let ve_o = other.velocity - vn_o
         
         self.velocity = vn_o + ve_s
