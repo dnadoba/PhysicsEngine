@@ -86,13 +86,12 @@ final class PhysicsEngine {
         for i in spheres.indices {
             spheres[i].update(Δt: Δt, world: world)
         }
-        // check for collisions
         
+        // check for collisions between all spheres once
         for i in spheres.indices {
-            // test for collisions with all other spheres
-            for iOther in spheres.indices {
-                // do not test collision with itself
-                if i == iOther { continue }
+            // do not test collision with itself and skip all previous spheres
+            let start = i + 1
+            for iOther in start..<spheres.endIndex {
                 if spheres[i].collides(with: spheres[iOther]) {
                     // collision detectet
                     // TODO
