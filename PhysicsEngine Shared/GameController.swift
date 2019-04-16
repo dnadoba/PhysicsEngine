@@ -52,6 +52,7 @@ class GameController: NSObject, SCNSceneRendererDelegate {
         
         
         super.init()
+        physicsEngine.delegate = self
         
         sceneRenderer.delegate = self
         
@@ -103,5 +104,18 @@ class GameController: NSObject, SCNSceneRendererDelegate {
         for (node, sphere) in zip(spheres, physicsEngine.spheres) {
             node.simdPosition = SIMD3<Float>(sphere.position)
         }
+    }
+}
+
+extension GameController: PhysicsEngineDelegate {
+    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, and other: Sphere, at collisionPoint: Vector) {
+        guard let collisionParticleSystem = SCNParticleSystem(named: "SceneKit Particle System.scnp", inDirectory: nil) else {
+            assertionFailure("could not load collision particle system")
+            return
+        }
+        let collisionParticleNode = SCNNode()
+        collisionParticleNode.simdPosition = simd_float3(collisionPoint)
+        collisionParticleNode.addParticleSystem(collisionParticleSystem)
+        scene.rootNode.addChildNode(collisionParticleNode)
     }
 }

@@ -38,6 +38,14 @@
 		C182D029225CC152002CC995 /* PhysicsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C182D027225CC152002CC995 /* PhysicsEngine.swift */; };
 		C182D02A225CC152002CC995 /* PhysicsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C182D027225CC152002CC995 /* PhysicsEngine.swift */; };
 		C182D02B225CC152002CC995 /* PhysicsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C182D027225CC152002CC995 /* PhysicsEngine.swift */; };
+		C1841B18226616420007CA6E /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = C1841B16226616420007CA6E /* spark.png */; };
+		C1841B19226616420007CA6E /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = C1841B16226616420007CA6E /* spark.png */; };
+		C1841B1A226616420007CA6E /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = C1841B16226616420007CA6E /* spark.png */; };
+		C1841B1B226616420007CA6E /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = C1841B16226616420007CA6E /* spark.png */; };
+		C1841B1C226616420007CA6E /* SceneKit Particle System.scnp in Resources */ = {isa = PBXBuildFile; fileRef = C1841B17226616420007CA6E /* SceneKit Particle System.scnp */; };
+		C1841B1D226616420007CA6E /* SceneKit Particle System.scnp in Resources */ = {isa = PBXBuildFile; fileRef = C1841B17226616420007CA6E /* SceneKit Particle System.scnp */; };
+		C1841B1E226616420007CA6E /* SceneKit Particle System.scnp in Resources */ = {isa = PBXBuildFile; fileRef = C1841B17226616420007CA6E /* SceneKit Particle System.scnp */; };
+		C1841B1F226616420007CA6E /* SceneKit Particle System.scnp in Resources */ = {isa = PBXBuildFile; fileRef = C1841B17226616420007CA6E /* SceneKit Particle System.scnp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +118,8 @@
 		C182D005225CC09E002CC995 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C182D007225CC09E002CC995 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C182D027225CC152002CC995 /* PhysicsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsEngine.swift; sourceTree = "<group>"; };
+		C1841B16226616420007CA6E /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spark.png; path = Art.scnassets/spark.png; sourceTree = "<group>"; };
+		C1841B17226616420007CA6E /* SceneKit Particle System.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; name = "SceneKit Particle System.scnp"; path = "Art.scnassets/SceneKit Particle System.scnp"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +174,8 @@
 				C182CFBF225CC09C002CC995 /* Art.scnassets */,
 				C182CFC0225CC09E002CC995 /* Assets.xcassets */,
 				C182D027225CC152002CC995 /* PhysicsEngine.swift */,
+				C1841B16226616420007CA6E /* spark.png */,
+				C1841B17226616420007CA6E /* SceneKit Particle System.scnp */,
 			);
 			path = "PhysicsEngine Shared";
 			sourceTree = "<group>";
@@ -377,9 +389,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C1841B18226616420007CA6E /* spark.png in Resources */,
 				C182CFCE225CC09E002CC995 /* Main.storyboard in Resources */,
 				C182CFD1225CC09E002CC995 /* LaunchScreen.storyboard in Resources */,
 				C182D010225CC09E002CC995 /* Assets.xcassets in Resources */,
+				C1841B1C226616420007CA6E /* SceneKit Particle System.scnp in Resources */,
 				C182D00C225CC09E002CC995 /* Art.scnassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -398,6 +412,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C182D00D225CC09E002CC995 /* Art.scnassets in Resources */,
+				C1841B1D226616420007CA6E /* SceneKit Particle System.scnp in Resources */,
+				C1841B19226616420007CA6E /* spark.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,7 +422,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C182CFF8225CC09E002CC995 /* Main.storyboard in Resources */,
+				C1841B1A226616420007CA6E /* spark.png in Resources */,
 				C182D012225CC09E002CC995 /* Assets.xcassets in Resources */,
+				C1841B1E226616420007CA6E /* SceneKit Particle System.scnp in Resources */,
 				C182D00E225CC09E002CC995 /* Art.scnassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -416,7 +434,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C182D006225CC09E002CC995 /* Main.storyboard in Resources */,
+				C1841B1B226616420007CA6E /* spark.png in Resources */,
 				C182D013225CC09E002CC995 /* Assets.xcassets in Resources */,
+				C1841B1F226616420007CA6E /* SceneKit Particle System.scnp in Resources */,
 				C182D00F225CC09E002CC995 /* Art.scnassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -25,7 +25,10 @@ struct Sphere {
     var velocity: Vector
     /// radius in meter
     let radius: Scalar = 0.5
-    
+    init(position: Vector, velocity: Vector = .zero) {
+        self.position = position
+        self.velocity = velocity
+    }
     /// updates position and velocity of this `Sphere`
     ///
     /// - Parameters:
@@ -54,6 +57,9 @@ struct Sphere {
     func collides(with other: Sphere) -> Bool {
         return distance(to: other) <= 0
     }
+    func collisionPoint(with other: Sphere) -> Vector {
+        return position + simd_normalize(other.position - position) * radius
+    }
     mutating func resolveCollision(with other: inout Sphere, Δt: TimeInterval, world: World) {
         let nr = other.velocity - self.velocity
         
@@ -79,6 +85,10 @@ struct World {
     let floorHeight: Scalar
 }
 
+protocol PhysicsEngineDelegate: AnyObject {
+    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, and other: Sphere, at collisionPoint: Vector)
+}
+
 final class PhysicsEngine {
     /// maximum delta time in seconds for one update
     static let maximumΔt: TimeInterval = 1/30
@@ -86,7 +96,7 @@ final class PhysicsEngine {
     static let `default` = PhysicsEngine()
     let world: World
     private(set) var spheres: [Sphere] = []
-    
+    weak var delegate: PhysicsEngineDelegate?
     init(world: World = .earth) {
         self.world = world
         self.reset()
@@ -107,9 +117,13 @@ final class PhysicsEngine {
             let start = i + 1
             for iOther in start..<spheres.endIndex {
                 var other = spheres[iOther]
-                if spheres[i].collides(with: spheres[iOther]) {
+                if spheres[i].collides(with: other) {
                     // collision detectet
+                    // notify delegate
+                    let collisionPoint = spheres[i].collisionPoint(with: other)
+                    delegate?.pyhsicEngine(self, didDetectCollisionBetween: spheres[i], and: other, at: collisionPoint)
                     
+                    // resolve collision
                     spheres[i].resolveCollision(with: &other, Δt: Δt, world: world)
                     spheres[iOther] = other
                 }
@@ -119,13 +133,15 @@ final class PhysicsEngine {
     func reset() {
         self.spheres = [
             //                      x     y       z
-            Sphere(position: Vector(-2,   4,      2), velocity: Vector(0,0,0)),
-            Sphere(position: Vector(-2.5,   6,      2), velocity: Vector(0,0,0)),
-//            Sphere(position: Vector(0,    5,      0), velocity: .zero),
-//            Sphere(position: Vector(1,    3,      1), velocity: .zero),
-//            Sphere(position: Vector(2,    4,      2), velocity: .zero),
-//            Sphere(position: Vector(0,    4,      2), velocity: Vector(0.1, 0, 1)),
-//            Sphere(position: Vector(-2,   3,    2.5), velocity: Vector(-0.1, 2, 1.5)),
+            Sphere(position: Vector(-2,   4,      2)),
+            Sphere(position: Vector(-2.5, 6,      2)),
+            Sphere(position: Vector(0,    5,      0)),
+            Sphere(position: Vector(0,    5,      0.5)),
+            Sphere(position: Vector(1,    3,      1)),
+            
+            Sphere(position: Vector(2,    4,      2)),
+            Sphere(position: Vector(0,    4,      2), velocity: Vector(0.1, 0, 1)),
+            Sphere(position: Vector(-2,   3,    2.5), velocity: Vector(-0.1, 2, 1.5)),
         ]
     }
 }
