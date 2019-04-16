@@ -106,9 +106,12 @@ final class PhysicsEngine {
             // do not test collision with itself and skip all previous spheres
             let start = i + 1
             for iOther in start..<spheres.endIndex {
+                var other = spheres[iOther]
                 if spheres[i].collides(with: spheres[iOther]) {
                     // collision detectet
-                    // TODO
+                    
+                    spheres[i].resolveCollision(with: &other, Δt: Δt, world: world)
+                    spheres[iOther] = other
                 }
             }
         }
@@ -117,11 +120,12 @@ final class PhysicsEngine {
         self.spheres = [
             //                      x     y       z
             Sphere(position: Vector(-2,   4,      2), velocity: Vector(0,0,0)),
-            Sphere(position: Vector(0,    5,      0), velocity: .zero),
-            Sphere(position: Vector(1,    3,      1), velocity: .zero),
-            Sphere(position: Vector(2,    4,      2), velocity: .zero),
-            Sphere(position: Vector(0,    4,      2), velocity: Vector(0.1, 0, 1)),
-            Sphere(position: Vector(-2,   3,    2.5), velocity: Vector(-0.1, 2, 1.5)),
+            Sphere(position: Vector(-2.5,   6,      2), velocity: Vector(0,0,0)),
+//            Sphere(position: Vector(0,    5,      0), velocity: .zero),
+//            Sphere(position: Vector(1,    3,      1), velocity: .zero),
+//            Sphere(position: Vector(2,    4,      2), velocity: .zero),
+//            Sphere(position: Vector(0,    4,      2), velocity: Vector(0.1, 0, 1)),
+//            Sphere(position: Vector(-2,   3,    2.5), velocity: Vector(-0.1, 2, 1.5)),
         ]
     }
 }
