@@ -87,7 +87,7 @@ final class PhysicsEngine {
             spheres[i].update(Δt: Δt, world: world)
         }
         
-        // check for collisions between all spheres once
+        // check for collisions between all spheres exactly once
         for i in spheres.indices {
             // do not test collision with itself and skip all previous spheres
             let start = i + 1
