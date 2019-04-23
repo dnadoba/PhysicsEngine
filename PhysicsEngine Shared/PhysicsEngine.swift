@@ -16,12 +16,14 @@ extension Vector {
     func distance(to other: Vector) -> Scalar {
         return simd_distance(self, other)
     }
+    var normalized: Vector {
+        return normalize(self)
+    }
 }
 
 struct Plane {
     var support_vector: Vector
     var normal_vector: Vector
-    
 }
 
 struct Sphere {
@@ -61,7 +63,7 @@ struct Sphere {
         return centerDistance - radius - other.radius
     }
     func distance(to other: Plane) -> Scalar {
-        fatalError("not implemented")
+        return simd_dot(position - other.support_vector, other.normal_vector) - radius
     }
     func collides(with other: Sphere) -> Bool {
         return distance(to: other) <= 0
@@ -73,7 +75,7 @@ struct Sphere {
         return position + simd_normalize(other.position - position) * radius
     }
     func collisionPoint(with other: Plane) -> Vector {
-        fatalError("not implemented")
+        return .zero //fatalError("not implemented")
     }
     mutating func resolveCollision(with other: inout Sphere, Δt: TimeInterval, world: World) {
         let nr = other.position - self.position
@@ -89,12 +91,9 @@ struct Sphere {
     }
     mutating func resolveCollision(with other: Plane, Δt: TimeInterval, world: World) {
         //simd_reflect(other.normal_vector, self.velocity)
-        let nr = other.normal_vector
-        
-        let vn_s = nr * (simd_dot(nr, self.velocity) / (pow(nr.x, 2) + pow(nr.y,2) + pow(nr.z, 2)))
-        let ve_s = self.velocity - vn_s
-        
-        self.velocity = -1 * vn_s + ve_s
+        let distance = self.distance(to: other)
+        self.position -= other.normal_vector * distance * 2
+        self.velocity = reflect(velocity, n: other.normal_vector)
     }
 }
 
@@ -182,9 +181,13 @@ final class PhysicsEngine {
             Sphere(position: Vector(0,    4,      2), velocity: Vector(0.1, 0, 1)),
             Sphere(position: Vector(-2,   3,    2.5), velocity: Vector(-0.1, 2, 1.5)),
         ]
-        #warning("add planes")
         self.planes = [
-            Plane.init(support_vector: .init(x: 0, y: 0, z: 0), normal_vector: .init(x: 0, y: 0, z: 0)),
+            Plane.init(support_vector: .init(x: 0, y: 0, z: 0), normal_vector: .init(x: 0, y: 1, z: 0)),
+            Plane.init(support_vector: .init(x: 0, y: 0, z: -5), normal_vector: .init(x: 0, y: 0, z: 1)),
+            Plane.init(support_vector: .init(x: -5, y: 0, z: 0), normal_vector: .init(x: 1, y: 0, z: 0)),
+            Plane.init(support_vector: .init(x: 5, y: 0, z: 0), normal_vector: .init(x: -1, y: 0, z: 0)),
+            Plane.init(support_vector: .init(x: 0, y: 0, z: 5), normal_vector: .init(x: 0, y: 0, z: -1)),
+            Plane.init(support_vector: .init(x: 0, y: 8, z: 0), normal_vector: Vector(x: -1, y: -1, z: 0).normalized),
         ]
     }
 }

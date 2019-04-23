@@ -46,10 +46,39 @@ class GameController: NSObject, SCNSceneRendererDelegate {
             scene.rootNode.addChildNode(node)
             return node
         }
+        let oriantations: [SCNVector3] = [
+            .init(-CGFloat.pi/2, 0, 0),
+            .init(0, 0, 0),
+            .init(0, CGFloat.pi/2, 0),
+            .init(0, -CGFloat.pi/2, 0),
+            .init(CGFloat.pi, 0, 0),
+            .init(CGFloat.pi/2, 0, -CGFloat.pi/4),
+        ]
+        let planes = zip(physicsEngine.planes, zip(oriantations, 0...)).map { args -> SCNNode in
+            let (plane, (orientation, i)) = args
+            let geometry = SCNPlane(width: 15, height: 15)
+            geometry.heightSegmentCount = 100
+            geometry.widthSegmentCount = 100
+            
+            let color = sphereColors[i % sphereColors.count]
+            if let material = geometry.firstMaterial {
+                material.lightingModel = .physicallyBased
+                material.metalness.contents = 0.3
+                material.roughness.contents = 0.5
+                material.diffuse.contents = color
+            }
+            
         
-        let floor = SCNNode(geometry: SCNFloor())
-        floor.simdPosition.y = Float(physicsEngine.world.floorHeight)
-        scene.rootNode.addChildNode(floor)
+            let node = SCNNode(geometry: geometry)
+            node.eulerAngles = orientation
+            node.position = .init(plane.support_vector)
+            scene.rootNode.addChildNode(node)
+            return node
+        }
+        
+//        let floor = SCNNode(geometry: SCNFloor())
+//        floor.simdPosition.y = Float(physicsEngine.world.floorHeight)
+//        scene.rootNode.addChildNode(floor)
         
         
         super.init()
