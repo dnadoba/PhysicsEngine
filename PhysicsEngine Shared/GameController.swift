@@ -109,7 +109,7 @@ class GameController: NSObject, SCNSceneRendererDelegate {
 }
 
 extension GameController: PhysicsEngineDelegate {
-    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, and other: Sphere, at collisionPoint: Vector) {
+    func addCollisionParticleSystem(at collisionPoint: Vector) {
         guard let collisionParticleSystem = collisionParticleSystem else {
             assertionFailure("could not load collision particle system")
             return
@@ -122,7 +122,13 @@ extension GameController: PhysicsEngineDelegate {
         collisionParticleNode.runAction(SCNAction.sequence([
             SCNAction.wait(duration: TimeInterval(duration)),
             SCNAction.removeFromParentNode(),
-        ]))
-        
+            ]))
+    }
+    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, and other: Plane, at collisionPoint: Vector) {
+        addCollisionParticleSystem(at: collisionPoint)
+    }
+    
+    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, and other: Sphere, at collisionPoint: Vector) {
+        addCollisionParticleSystem(at: collisionPoint)
     }
 }

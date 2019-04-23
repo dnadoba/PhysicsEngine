@@ -18,6 +18,12 @@ extension Vector {
     }
 }
 
+struct Plane {
+    var support_vector: Vector
+    var normal_vector: Vector
+    
+}
+
 struct Sphere {
     /// position in meter
     var position: Vector
@@ -54,11 +60,20 @@ struct Sphere {
         let centerDistance = position.distance(to: other.position)
         return centerDistance - radius - other.radius
     }
+    func distance(to other: Plane) -> Scalar {
+        fatalError("not implemented")
+    }
     func collides(with other: Sphere) -> Bool {
+        return distance(to: other) <= 0
+    }
+    func collides(with other: Plane) -> Bool {
         return distance(to: other) <= 0
     }
     func collisionPoint(with other: Sphere) -> Vector {
         return position + simd_normalize(other.position - position) * radius
+    }
+    func collisionPoint(with other: Plane) -> Vector {
+        fatalError("not implemented")
     }
     mutating func resolveCollision(with other: inout Sphere, Δt: TimeInterval, world: World) {
         let nr = other.position - self.position
@@ -71,6 +86,15 @@ struct Sphere {
         
         self.velocity = vn_o + ve_s
         other.velocity = vn_s + ve_o
+    }
+    mutating func resolveCollision(with other: Plane, Δt: TimeInterval, world: World) {
+        //simd_reflect(other.normal_vector, self.velocity)
+        let nr = other.normal_vector
+        
+        let vn_s = nr * (simd_dot(nr, self.velocity) / (pow(nr.x, 2) + pow(nr.y,2) + pow(nr.z, 2)))
+        let ve_s = self.velocity - vn_s
+        
+        self.velocity = -1 * vn_s + ve_s
     }
 }
 
@@ -85,6 +109,7 @@ struct World {
 
 protocol PhysicsEngineDelegate: AnyObject {
     func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, and other: Sphere, at collisionPoint: Vector)
+    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, and other: Plane, at collisionPoint: Vector)
 }
 
 final class PhysicsEngine {
@@ -94,6 +119,7 @@ final class PhysicsEngine {
     static let `default` = PhysicsEngine()
     let world: World
     private(set) var spheres: [Sphere] = []
+    private(set) var planes: [Plane] = []
     weak var delegate: PhysicsEngineDelegate?
     init(world: World = .earth) {
         self.world = world
@@ -127,6 +153,19 @@ final class PhysicsEngine {
                 }
             }
         }
+        // check for collisions between speares and planes
+        for i in spheres.indices {
+            for plane in planes {
+                if spheres[i].collides(with: plane) {
+                    // collision detectet
+                    // notify delegate
+                    let collisionPoint = spheres[i].collisionPoint(with: plane)
+                    delegate?.pyhsicEngine(self, didDetectCollisionBetween: spheres[i], and: plane, at: collisionPoint)
+                    // resolve collision
+                    spheres[i].resolveCollision(with: plane, Δt: Δt, world: world)
+                }
+            }
+        }
     }
     func reset() {
         self.spheres = [
@@ -142,6 +181,10 @@ final class PhysicsEngine {
             Sphere(position: Vector(2,    12,      2)),
             Sphere(position: Vector(0,    4,      2), velocity: Vector(0.1, 0, 1)),
             Sphere(position: Vector(-2,   3,    2.5), velocity: Vector(-0.1, 2, 1.5)),
+        ]
+        #warning("add planes")
+        self.planes = [
+            Plane.init(support_vector: .init(x: 0, y: 0, z: 0), normal_vector: .init(x: 0, y: 0, z: 0)),
         ]
     }
 }
