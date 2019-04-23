@@ -45,14 +45,6 @@ struct Sphere {
     mutating func update(Δt: TimeInterval, world: World) {
         velocity += world.gravity * Δt
         position += velocity * Δt
-        
-        // collision with floor plane
-        if (position.y - radius) < world.floorHeight {
-            // reset the position to be above (or on) the floor plane
-            let belowFloor = world.floorHeight - (position.y - radius)
-            position.y += belowFloor * 2
-            velocity.y *= -1
-        }
     }
     /// distance between `self` and the `other`
     ///
@@ -160,11 +152,11 @@ final class PhysicsEngine {
             for plane in planes {
                 if spheres[i].collides(with: plane) {
                     // collision detectet
-                    // notify delegate
-                    let collisionPoint = spheres[i].collisionPoint(with: plane)
-                    delegate?.pyhsicEngine(self, didDetectCollisionBetween: spheres[i], and: plane, at: collisionPoint)
+                    
                     // resolve collision
-                    spheres[i].resolveCollision(with: plane, Δt: Δt, world: world)
+                    let collisionPoint = spheres[i].resolveCollision(with: plane, Δt: Δt, world: world)
+                    // notify delegate
+                    delegate?.pyhsicEngine(self, didDetectCollisionBetween: spheres[i], and: plane, at: collisionPoint)
                 }
             }
         }
@@ -174,15 +166,15 @@ final class PhysicsEngine {
             //                      x     y       z
             Sphere(position: Vector(-2,   4,      2)),
             Sphere(position: Vector(-2.5, 6,      2)),
-            Sphere(position: Vector(0,    5,      -0.3)),
-            Sphere(position: Vector(0,    6,      0.4)),
-            Sphere(position: Vector(1,    3,      1)),
-            
-            Sphere(position: Vector(2,    4,      2)),
-            Sphere(position: Vector(2,    10,      2)),
-            Sphere(position: Vector(2,    12,      2)),
-            Sphere(position: Vector(0,    4,      2), velocity: Vector(0.1, 0, 1)),
-            Sphere(position: Vector(-2,   3,    2.5), velocity: Vector(-0.1, 2, 1.5)),
+            Sphere(position: Vector(1,    5,      -0.3)),
+            Sphere(position: Vector(-3,    6,      0.4)),
+//            Sphere(position: Vector(1,    3,      1)),
+//
+//            Sphere(position: Vector(2,    4,      2)),
+//            Sphere(position: Vector(2,    10,      2)),
+//            Sphere(position: Vector(2,    12,      2)),
+//            Sphere(position: Vector(0,    4,      2), velocity: Vector(0.1, 0, 1)),
+//            Sphere(position: Vector(-2,   3,    2.5), velocity: Vector(-0.1, 2, 1.5)),
         ]
         self.planes = [
             Plane.init(support_vector: .init(x: 0, y: 0, z: 0), normal_vector: .init(x: 0, y: 1, z: 0)),
