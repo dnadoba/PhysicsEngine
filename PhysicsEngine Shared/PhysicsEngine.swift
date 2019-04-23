@@ -89,11 +89,14 @@ struct Sphere {
         self.velocity = vn_o + ve_s
         other.velocity = vn_s + ve_o
     }
-    mutating func resolveCollision(with other: Plane, Δt: TimeInterval, world: World) {
+    mutating func resolveCollision(with other: Plane, Δt: TimeInterval, world: World) -> Vector {
         //simd_reflect(other.normal_vector, self.velocity)
         let distance = self.distance(to: other)
+        let collision_point = self.position - other.normal_vector * (distance + self.radius)
         self.position -= other.normal_vector * distance * 2
         self.velocity = reflect(velocity, n: other.normal_vector)
+        
+        return collision_point
     }
 }
 
