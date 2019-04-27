@@ -70,16 +70,26 @@ struct Sphere {
         return .zero //fatalError("not implemented")
     }
     mutating func resolveCollision(with other: inout Sphere, Δt: TimeInterval, world: World) {
-        let nr = other.position - self.position
+        let nr = other.position - position
         
-        let vn_s = nr * (simd_dot(nr, self.velocity) / (pow(nr.x, 2) + pow(nr.y,2) + pow(nr.z, 2)))
-        let ve_s = self.velocity - vn_s
+        let vn_s = nr * (simd_dot(nr, velocity) / (pow(nr.x, 2) + pow(nr.y,2) + pow(nr.z, 2)))
+        let ve_s = velocity - vn_s
         
         let vn_o = nr * (simd_dot(nr, other.velocity) / (pow(nr.x, 2) + pow(nr.y, 2) + pow(nr.z, 2)))
         let ve_o = other.velocity - vn_o
         
-        self.velocity = vn_o + ve_s
+        velocity = vn_o + ve_s
         other.velocity = vn_s + ve_o
+        
+        let normalized_nr = simd_normalize(nr)
+        
+        let relative_velocitiy = 2 * simd_length(velocity) / (simd_length(velocity) + simd_length(other.velocity))
+        let relative_other_velocitiy = 2 * simd_length(other.velocity) / (simd_length(velocity) + simd_length(other.velocity))
+        
+        position = position + relative_velocitiy * normalized_nr * distance(to: other)
+        other.position = other.position - relative_other_velocitiy * normalized_nr * distance(to: other)
+        
+//      Nach geschwindigkeit verteilen
     }
     mutating func resolveCollision(with other: Plane, Δt: TimeInterval, world: World) -> Vector {
         //simd_reflect(other.normal_vector, self.velocity)
@@ -165,16 +175,14 @@ final class PhysicsEngine {
         self.spheres = [
             //                      x     y       z
             Sphere(position: Vector(-2,   4,      2)),
-            Sphere(position: Vector(-2.5, 6,      2)),
-            Sphere(position: Vector(1,    5,      -0.3)),
-            Sphere(position: Vector(-3,    6,      0.4)),
-//            Sphere(position: Vector(1,    3,      1)),
-//
-//            Sphere(position: Vector(2,    4,      2)),
-//            Sphere(position: Vector(2,    10,      2)),
-//            Sphere(position: Vector(2,    12,      2)),
-//            Sphere(position: Vector(0,    4,      2), velocity: Vector(0.1, 0, 1)),
-//            Sphere(position: Vector(-2,   3,    2.5), velocity: Vector(-0.1, 2, 1.5)),
+            Sphere(position: Vector(-2.1,   1,      2)),
+            Sphere(position: Vector(-4,   1,      2)),
+            Sphere(position: Vector(-3,   4,      1)),
+            Sphere(position: Vector(-2,   1,      3)),
+            Sphere(position: Vector(-1,   4,      4)),
+            Sphere(position: Vector(3,   2,      2.5)),
+            Sphere(position: Vector(2,   4,      0.5)),
+            Sphere(position: Vector(1,   3,      2)),
         ]
         self.planes = [
             Plane.init(support_vector: .init(x: 0, y: 0, z: 0), normal_vector: .init(x: 0, y: 1, z: 0)),
