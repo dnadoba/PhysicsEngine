@@ -31,6 +31,7 @@ struct Sphere {
     var position: Vector
     /// velicity in meter per second
     var velocity: Vector
+    var mass: Scalar { return (4/3) * .pi * radius}
     /// radius in meter
     let radius: Scalar = 0.5
     init(position: Vector, velocity: Vector = .zero) {
@@ -72,31 +73,38 @@ struct Sphere {
     mutating func resolveCollision(with other: inout Sphere, Δt: TimeInterval, world: World) {
         let nr = other.position - position
         
-        let vn_s = nr * (simd_dot(nr, velocity) / (pow(nr.x, 2) + pow(nr.y,2) + pow(nr.z, 2)))
+        let vn_s = nr * (simd_dot(nr, velocity) / simd_dot(nr, nr))
         let ve_s = velocity - vn_s
         
-        let vn_o = nr * (simd_dot(nr, other.velocity) / (pow(nr.x, 2) + pow(nr.y, 2) + pow(nr.z, 2)))
+        let vn_o = nr * (simd_dot(nr, other.velocity) / simd_dot(nr, nr))
         let ve_o = other.velocity - vn_o
         
-        velocity = vn_o + ve_s
-        other.velocity = vn_s + ve_o
+        let sum_mass = mass + other.mass
+        
+        let nun_s = 2 * other.mass * vn_o + (mass - other.mass) * vn_s
+        let nun_o = 2 * mass * vn_s + (other.mass - mass) * vn_o
+        
+        let un_s = nun_s / sum_mass
+        let un_o = nun_o / sum_mass
+        
+        velocity = un_s + ve_s
+        other.velocity = un_o + ve_o
+        
+        
         
         let normalized_nr = simd_normalize(nr)
-        
-        let relative_velocitiy = 2 * simd_length(velocity) / (simd_length(velocity) + simd_length(other.velocity))
-        let relative_other_velocitiy = 2 * simd_length(other.velocity) / (simd_length(velocity) + simd_length(other.velocity))
+        let relative_velocitiy = 2 * simd_length(vn_s) / (simd_length(vn_s) + simd_length(vn_o))
+        let relative_other_velocitiy = 2 * simd_length(vn_o) / (simd_length(vn_s) + simd_length(vn_o))
         
         position = position + relative_velocitiy * normalized_nr * distance(to: other)
         other.position = other.position - relative_other_velocitiy * normalized_nr * distance(to: other)
-        
-//      Nach geschwindigkeit verteilen
     }
     mutating func resolveCollision(with other: Plane, Δt: TimeInterval, world: World) -> Vector {
         //simd_reflect(other.normal_vector, self.velocity)
         let distance = self.distance(to: other)
-        let collision_point = self.position - other.normal_vector * (distance + self.radius)
-        self.position -= other.normal_vector * distance * 2
-        self.velocity = reflect(velocity, n: other.normal_vector)
+        let collision_point = position - other.normal_vector * (distance + radius)
+        position -= other.normal_vector * distance * 2
+        velocity = reflect(velocity, n: other.normal_vector)
         
         return collision_point
     }
@@ -175,14 +183,14 @@ final class PhysicsEngine {
         self.spheres = [
             //                      x     y       z
             Sphere(position: Vector(-2,   4,      2)),
-            Sphere(position: Vector(-2.1,   1,      2)),
+            Sphere(position: Vector(-2.1, 1,      2)),
             Sphere(position: Vector(-4,   1,      2)),
             Sphere(position: Vector(-3,   4,      1)),
             Sphere(position: Vector(-2,   1,      3)),
             Sphere(position: Vector(-1,   4,      4)),
-            Sphere(position: Vector(3,   2,      2.5)),
-            Sphere(position: Vector(2,   4,      0.5)),
-            Sphere(position: Vector(1,   3,      2)),
+            Sphere(position: Vector(3,    2,      2.5)),
+            Sphere(position: Vector(2,    4,      0.5)),
+            Sphere(position: Vector(1,    3,      2)),
         ]
         self.planes = [
             Plane.init(support_vector: .init(x: 0, y: 0, z: 0), normal_vector: .init(x: 0, y: 1, z: 0)),
