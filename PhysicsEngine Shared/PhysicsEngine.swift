@@ -112,8 +112,8 @@ struct World {
 }
 
 protocol PhysicsEngineDelegate: AnyObject {
-    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, and other: Sphere, at collisionPoint: Vector)
-    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, and other: Plane, at collisionPoint: Vector)
+    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, sphereId: Int, and other: Sphere, otherId: Int, at collisionPoint: Vector)
+    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, sphereId: Int, and other: Plane, at collisionPoint: Vector)
 }
 
 final class PhysicsEngine {
@@ -149,7 +149,7 @@ final class PhysicsEngine {
                     // collision detectet
                     // notify delegate
                     let collisionPoint = spheres[i].collisionPoint(with: other)
-                    delegate?.pyhsicEngine(self, didDetectCollisionBetween: spheres[i], and: other, at: collisionPoint)
+                    delegate?.pyhsicEngine(self, didDetectCollisionBetween: spheres[i], sphereId: i, and: other, otherId: iOther, at: collisionPoint)
                     
                     // resolve collision
                     spheres[i].resolveCollision(with: &other, Δt: Δt, world: world)
@@ -166,7 +166,7 @@ final class PhysicsEngine {
                     // resolve collision
                     let collisionPoint = spheres[i].resolveCollision(with: plane, Δt: Δt, world: world)
                     // notify delegate
-                    delegate?.pyhsicEngine(self, didDetectCollisionBetween: spheres[i], and: plane, at: collisionPoint)
+                    delegate?.pyhsicEngine(self, didDetectCollisionBetween: spheres[i], sphereId: i, and: plane, at: collisionPoint)
                 }
             }
         }
@@ -192,5 +192,12 @@ final class PhysicsEngine {
             Plane.init(support_vector: .init(x: 0, y: 0, z: 5), normal_vector: .init(x: 0, y: 0, z: -1)),
             Plane.init(support_vector: .init(x: 0, y: 8, z: 0), normal_vector: Vector(x: -1, y: -1, z: 0).normalized),
         ]
+    }
+    func copy() -> PhysicsEngine {
+        let engine = PhysicsEngine(world: world)
+        engine.spheres = spheres
+        engine.planes = planes
+        engine.delegate = delegate
+        return engine
     }
 }
