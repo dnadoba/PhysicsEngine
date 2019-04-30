@@ -33,10 +33,11 @@ struct Sphere {
     var velocity: Vector
     var mass: Scalar { return (4/3) * .pi * radius}
     /// radius in meter
-    let radius: Scalar = 0.5
-    init(position: Vector, velocity: Vector = .zero) {
+    let radius: Scalar
+    init(position: Vector, velocity: Vector = .zero, radius: Scalar = 0.5) {
         self.position = position
         self.velocity = velocity
+        self.radius = radius
     }
     /// updates position and velocity of this `Sphere`
     ///
