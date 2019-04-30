@@ -90,8 +90,6 @@ struct Sphere {
         velocity = un_s + ve_s
         other.velocity = un_o + ve_o
         
-        
-        
         let normalized_nr = simd_normalize(nr)
         let relative_velocitiy = 2 * simd_length(vn_s) / (simd_length(vn_s) + simd_length(vn_o))
         let relative_other_velocitiy = 2 * simd_length(vn_o) / (simd_length(vn_s) + simd_length(vn_o))
