@@ -92,8 +92,10 @@ struct Sphere {
         other.velocity = un_o + ve_o
         
         let normalized_nr = simd_normalize(nr)
-        let relative_velocitiy = 2 * simd_length(vn_s) / (simd_length(vn_s) + simd_length(vn_o))
-        let relative_other_velocitiy = 2 * simd_length(vn_o) / (simd_length(vn_s) + simd_length(vn_o))
+        
+        let combined_vn_length = simd_length(vn_s) + simd_length(vn_o)
+        let relative_velocitiy = combined_vn_length != 0 ? 2 * simd_length(vn_s) / combined_vn_length : 0
+        let relative_other_velocitiy = combined_vn_length != 0 ? 2 * simd_length(vn_o) / combined_vn_length : 0
         
         position = position + relative_velocitiy * normalized_nr * distance(to: other)
         other.position = other.position - relative_other_velocitiy * normalized_nr * distance(to: other)
@@ -181,15 +183,10 @@ final class PhysicsEngine {
     func reset() {
         self.spheres = [
             //                      x     y       z
-            Sphere(position: Vector(-2,   4,      2)),
+            Sphere(position: Vector(-2,   4,      2), radius: 2),
             Sphere(position: Vector(-2.1, 1,      2)),
             Sphere(position: Vector(-4,   1,      2)),
             Sphere(position: Vector(-3,   4,      1)),
-            Sphere(position: Vector(-2,   1,      3)),
-            Sphere(position: Vector(-1,   4,      4)),
-            Sphere(position: Vector(3,    2,      2.5)),
-            Sphere(position: Vector(2,    4,      0.5)),
-            Sphere(position: Vector(1,    3,      2)),
         ]
         self.planes = [
             Plane.init(support_vector: .init(x: 0, y: 0, z: 0), normal_vector: .init(x: 0, y: 1, z: 0)),

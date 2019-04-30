@@ -23,7 +23,7 @@ extension RandomAccessCollection {
         return indices.contains(i) ? self[i] : nil
     }
 }
-fileprivate let maxIterationCount = 60
+fileprivate let maxIterationCount = 1
 
 class GameController: NSObject, SCNSceneRendererDelegate {
     let physicsEngine: PhysicsEngine = .default
