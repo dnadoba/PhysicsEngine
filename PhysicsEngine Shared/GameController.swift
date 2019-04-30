@@ -18,19 +18,28 @@ import SceneKit
     typealias SCNColor = UIColor
 #endif
 
+extension RandomAccessCollection {
+    subscript(safe i: Index) -> Element? {
+        return indices.contains(i) ? self[i] : nil
+    }
+}
+fileprivate let maxIterationCount = 60
+
 class GameController: NSObject, SCNSceneRendererDelegate {
     let physicsEngine: PhysicsEngine = .default
-    let spheres: [SCNNode]
+    let spheres: [[SCNNode]]
     let scene: SCNScene
     let sceneRenderer: SCNSceneRenderer
     var collisionParticleSystem = SCNParticleSystem(named: "SceneKit Particle System.scnp", inDirectory: nil)
+
     
     init(sceneRenderer renderer: SCNSceneRenderer) {
         sceneRenderer = renderer
         let scene = SCNScene(named: "Art.scnassets/scene.scn")!
         self.scene = scene
         let sphereColors: [SCNColor] = [.red, .orange, .blue, .purple, .yellow, .cyan, .gray, .magenta, .green]
-        spheres = zip(physicsEngine.spheres, 0...).map { (sphere, i) -> SCNNode in
+        
+        spheres = zip(physicsEngine.spheres, 0...).map { (sphere, i) -> [SCNNode] in
             let geometry = SCNSphere(radius: CGFloat(sphere.radius))
             
             let color = sphereColors[i % sphereColors.count]
@@ -43,9 +52,16 @@ class GameController: NSObject, SCNSceneRendererDelegate {
             
             
             let node = SCNNode(geometry: geometry)
-            scene.rootNode.addChildNode(node)
-            return node
+            
+            return (0..<maxIterationCount).map { _ in
+                let copy = node.clone()
+                scene.rootNode.addChildNode(copy)
+                return copy
+            }
         }
+        
+        
+        
         let oriantations: [SCNVector3] = [
             .init(-CGFloat.pi/2, 0, 0),
             .init(0, 0, 0),
@@ -54,7 +70,7 @@ class GameController: NSObject, SCNSceneRendererDelegate {
             .init(CGFloat.pi, 0, 0),
             .init(CGFloat.pi/2, 0, -CGFloat.pi/4),
         ]
-        let planes = zip(physicsEngine.planes, zip(oriantations, 0...)).map { args -> SCNNode in
+        zip(physicsEngine.planes, zip(oriantations, 0...)).forEach { args in
             let (plane, (orientation, i)) = args
             let geometry = SCNPlane(width: 15, height: 15)
             geometry.heightSegmentCount = 100
@@ -73,14 +89,8 @@ class GameController: NSObject, SCNSceneRendererDelegate {
             node.eulerAngles = orientation
             node.position = .init(plane.support_vector)
             scene.rootNode.addChildNode(node)
-            return node
         }
-        
-//        let floor = SCNNode(geometry: SCNFloor())
-//        floor.simdPosition.y = Float(physicsEngine.world.floorHeight)
-//        scene.rootNode.addChildNode(floor)
-        
-        
+
         super.init()
         physicsEngine.delegate = self
         
@@ -124,15 +134,26 @@ class GameController: NSObject, SCNSceneRendererDelegate {
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         renderer.isPlaying = true
         // Called before each frame is rendered
-        if let lastUpdateTime = self.lastUpdateTime {
-            physicsEngine.update(elapsedTime: time - lastUpdateTime)
-        }
-        lastUpdateTime = time
-        updateSpheresFromPhysicsEngine()
+        
+        let spheres = simulateUntilCollisionWithASphere(engine: physicsEngine.copy(), Δt: 1/60, maxIterationCount: maxIterationCount)
+        physicsEngine.update(elapsedTime: 1/60)
+        updateSpheresFromPhysicsEngine(spheres: spheres)
     }
-    func updateSpheresFromPhysicsEngine() {
-        for (node, sphere) in zip(spheres, physicsEngine.spheres) {
-            node.simdPosition = SIMD3<Float>(sphere.position)
+    func updateSpheresFromPhysicsEngine(spheres: [Int: [Sphere]]) {
+        for (id, sphereNodes) in self.spheres.enumerated() {
+            for i in 0..<maxIterationCount {
+                let node = sphereNodes[i]
+                if let sphere = spheres[id]?[safe: i] {
+                    node.position = SCNVector3(sphere.position)
+                    node.opacity = (1 - CGFloat(i) / CGFloat(spheres[id]?.count ?? 1)) * 0.3
+                    if i == 0 {
+                        node.opacity = 1
+                    }
+                    node.isHidden = false
+                } else {
+                    node.isHidden = true
+                }
+            }
         }
     }
 }
@@ -153,11 +174,60 @@ extension GameController: PhysicsEngineDelegate {
             SCNAction.removeFromParentNode(),
             ]))
     }
-    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, and other: Plane, at collisionPoint: Vector) {
+    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, sphereId: Int, and other: Plane, at collisionPoint: Vector) {
         addCollisionParticleSystem(at: collisionPoint)
     }
     
-    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, and other: Sphere, at collisionPoint: Vector) {
+    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, sphereId: Int, and other: Sphere, otherId: Int, at collisionPoint: Vector) {
         addCollisionParticleSystem(at: collisionPoint)
     }
+}
+
+
+func makeLine(vertices: [SCNVector3], color: SCNColor) {
+    let source = SCNGeometrySource(vertices: vertices)
+    let element = SCNGeometryElement(indices: Array(vertices.indices), primitiveType: .line)
+    
+    let line = SCNGeometry(sources: [source], elements: [element])
+    line.firstMaterial?.lightingModel = SCNMaterial.LightingModel.constant
+    line.firstMaterial?.diffuse.contents = color
+}
+
+class CallbackDelegate: PhysicsEngineDelegate {
+    var spherersDidCollide: (Sphere, Int, Sphere, Int, Vector) -> () = { _,_,_,_,_ in }
+    var sphererDidCollideWithPlane: (Sphere, Int, Plane, Vector) -> () = { _,_,_,_ in }
+    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, sphereId: Int, and other: Sphere, otherId: Int, at collisionPoint: Vector) {
+        spherersDidCollide(sphere, sphereId, other, otherId, collisionPoint)
+    }
+    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, sphereId: Int, and other: Plane, at collisionPoint: Vector) {
+        sphererDidCollideWithPlane(sphere, sphereId, other, collisionPoint)
+    }
+}
+
+func simulateUntilCollisionWithASphere(engine: PhysicsEngine, Δt: TimeInterval, maxIterationCount: Int = 10 * 60) -> [Int: [Sphere]] {
+    var spheres : [Int: [Sphere]] = [:]
+    var spheresThatDidCollide = Set<Int>()
+    let delegate = CallbackDelegate()
+    delegate.spherersDidCollide = { (sphere1, id1, sphere2, id2, collisionPoint) in
+        //spheresThatDidCollide.insert(id1)
+        //spheresThatDidCollide.insert(id2)
+    }
+    engine.delegate = delegate
+    for _ in 0..<maxIterationCount {
+        let spheresThatDidCollideInPreviousItteration = spheresThatDidCollide
+        
+        engine.update(elapsedTime: Δt)
+        
+        let spheresThatDidNotCollide = zip(engine.spheres.indices, engine.spheres)
+            .filter({ !spheresThatDidCollideInPreviousItteration.contains($0.0) })
+        
+        for (i, sphere) in spheresThatDidNotCollide {
+            spheres[i, default: []].append(sphere)
+        }
+        
+        if spheresThatDidCollide.count == engine.spheres.count {
+            break
+        }
+    }
+    return spheres
 }
