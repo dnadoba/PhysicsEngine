@@ -23,7 +23,7 @@ extension RandomAccessCollection {
         return indices.contains(i) ? self[i] : nil
     }
 }
-fileprivate let maxIterationCount = 1
+fileprivate let maxIterationCount = 100
 
 class GameController: NSObject, SCNSceneRendererDelegate {
     let physicsEngine: PhysicsEngine = .default
@@ -42,7 +42,7 @@ class GameController: NSObject, SCNSceneRendererDelegate {
         spheres = zip(physicsEngine.spheres, 0...).map { (sphere, i) -> [SCNNode] in
             let geometry = SCNSphere(radius: CGFloat(sphere.radius))
             
-            let color = sphereColors[i % sphereColors.count]
+            let color = sphereColors[(i + 5) % sphereColors.count]
             if let material = geometry.firstMaterial {
                 material.lightingModel = .physicallyBased
                 material.metalness.contents = 0.3
@@ -145,9 +145,11 @@ class GameController: NSObject, SCNSceneRendererDelegate {
                 let node = sphereNodes[i]
                 if let sphere = spheres[id]?[safe: i] {
                     node.position = SCNVector3(sphere.position)
-                    node.opacity = (1 - CGFloat(i) / CGFloat(spheres[id]?.count ?? 1)) * 0.3
+                    node.opacity = (1 - CGFloat(i) / CGFloat(spheres[id]?.count ?? 1)) * 0.5
+                    node.scale = SCNVector3(0.3, 0.3, 0.3)
                     if i == 0 {
                         node.opacity = 1
+                        node.scale = SCNVector3(1, 1, 1)
                     }
                     node.isHidden = false
                 } else {
@@ -209,8 +211,8 @@ func simulateUntilCollisionWithASphere(engine: PhysicsEngine, Δt: TimeInterval,
     var spheresThatDidCollide = Set<Int>()
     let delegate = CallbackDelegate()
     delegate.spherersDidCollide = { (sphere1, id1, sphere2, id2, collisionPoint) in
-        //spheresThatDidCollide.insert(id1)
-        //spheresThatDidCollide.insert(id2)
+        spheresThatDidCollide.insert(id1)
+        spheresThatDidCollide.insert(id2)
     }
     engine.delegate = delegate
     for _ in 0..<maxIterationCount {

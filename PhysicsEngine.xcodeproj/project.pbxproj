@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C11D94E42281B37900499BB3 /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11D94E32281B37900499BB3 /* Demo.swift */; };
+		C11D94E52281B38E00499BB3 /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11D94E32281B37900499BB3 /* Demo.swift */; };
+		C11D94E62281B38E00499BB3 /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11D94E32281B37900499BB3 /* Demo.swift */; };
+		C11D94E72281B39000499BB3 /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11D94E32281B37900499BB3 /* Demo.swift */; };
 		C182CFC9225CC09E002CC995 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C182CFC8225CC09E002CC995 /* AppDelegate.swift */; };
 		C182CFCB225CC09E002CC995 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C182CFCA225CC09E002CC995 /* GameViewController.swift */; };
 		C182CFCE225CC09E002CC995 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C182CFCC225CC09E002CC995 /* Main.storyboard */; };
@@ -91,6 +95,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C11D94E32281B37900499BB3 /* Demo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		C182CFBE225CC09C002CC995 /* GameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
 		C182CFBF225CC09C002CC995 /* Art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Art.scnassets; sourceTree = "<group>"; };
 		C182CFC0225CC09E002CC995 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -176,6 +181,7 @@
 				C182D027225CC152002CC995 /* PhysicsEngine.swift */,
 				C1841B16226616420007CA6E /* spark.png */,
 				C1841B17226616420007CA6E /* SceneKit Particle System.scnp */,
+				C11D94E32281B37900499BB3 /* Demo.swift */,
 			);
 			path = "PhysicsEngine Shared";
 			sourceTree = "<group>";
@@ -449,6 +455,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C182CFCB225CC09E002CC995 /* GameViewController.swift in Sources */,
+				C11D94E42281B37900499BB3 /* Demo.swift in Sources */,
 				C182D008225CC09E002CC995 /* GameController.swift in Sources */,
 				C182CFC9225CC09E002CC995 /* AppDelegate.swift in Sources */,
 				C182D028225CC152002CC995 /* PhysicsEngine.swift in Sources */,
@@ -460,6 +467,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C182CFEA225CC09E002CC995 /* ExtensionDelegate.swift in Sources */,
+				C11D94E72281B39000499BB3 /* Demo.swift in Sources */,
 				C182D009225CC09E002CC995 /* GameController.swift in Sources */,
 				C182CFE8225CC09E002CC995 /* InterfaceController.swift in Sources */,
 				C182D029225CC152002CC995 /* PhysicsEngine.swift in Sources */,
@@ -471,6 +479,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C182CFF5225CC09E002CC995 /* GameViewController.swift in Sources */,
+				C11D94E52281B38E00499BB3 /* Demo.swift in Sources */,
 				C182D00A225CC09E002CC995 /* GameController.swift in Sources */,
 				C182CFF3225CC09E002CC995 /* AppDelegate.swift in Sources */,
 				C182D02A225CC152002CC995 /* PhysicsEngine.swift in Sources */,
@@ -482,6 +491,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C182D003225CC09E002CC995 /* GameViewController.swift in Sources */,
+				C11D94E62281B38E00499BB3 /* Demo.swift in Sources */,
 				C182D00B225CC09E002CC995 /* GameController.swift in Sources */,
 				C182D001225CC09E002CC995 /* AppDelegate.swift in Sources */,
 				C182D02B225CC152002CC995 /* PhysicsEngine.swift in Sources */,

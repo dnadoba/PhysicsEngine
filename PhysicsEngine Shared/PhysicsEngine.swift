@@ -21,9 +21,20 @@ extension Vector {
     }
 }
 
+extension Vector {
+    static let up = Vector(0, 1, 0)
+}
+
 struct Plane {
     var support_vector: Vector
     var normal_vector: Vector
+}
+
+extension Plane {
+    init(at position: Vector, direction: Vector) {
+        support_vector = position
+        normal_vector = direction.normalized
+    }
 }
 
 struct Sphere {
@@ -114,6 +125,7 @@ struct Sphere {
 struct World {
     static let earth = World(gravity: .init(0, -9.807, 0), floorHeight: 0)
     static let moon = World(gravity: .init(0, -1.62 , 0), floorHeight: 0)
+    static let zero = World(gravity: .init(0, 0 , 0), floorHeight: 0)
     /// gravity in meter per second
     let gravity: Vector
     /// floor plane height in meter
@@ -183,10 +195,10 @@ final class PhysicsEngine {
     func reset() {
         self.spheres = [
             //                      x     y       z
-            Sphere(position: Vector(-2,   4,      2), radius: 2),
-            Sphere(position: Vector(-2.1, 1,      2)),
-            Sphere(position: Vector(-4,   1,      2)),
-            Sphere(position: Vector(-3,   4,      1)),
+            Sphere(position: Vector(-2,   4,      2.1)),
+            Sphere(position: Vector(-2.1, 0.9,      2)),
+            Sphere(position: Vector(-4,   1.1,      1.9)),
+            Sphere(position: Vector(-3.1,   4,      1)),
         ]
         self.planes = [
             Plane.init(support_vector: .init(x: 0, y: 0, z: 0), normal_vector: .init(x: 0, y: 1, z: 0)),
