@@ -125,7 +125,10 @@ class GameController: NSObject, SCNSceneRendererDelegate {
             }
             
             let node = SCNNode(geometry: geometry)
-            node.simdLook(at: .init(plane.normal_vector), up: node.simdWorldUp, localFront: -SCNNode.simdLocalFront)
+            // if we do not add a small number and the support_vector is (x: 0, y: 0, z: -1)
+            // node.simdLook(at:_,up:_,localFront:_) will orient the plane in the opposit direction
+            let lookAt = plane.normal_vector + Vector(0.0000001, 0.00000001, 0.00000001)
+            node.simdLook(at: .init(lookAt), up: node.simdWorldUp, localFront: -SCNNode.simdLocalFront)
             node.position = .init(plane.support_vector)
             scene.rootNode.addChildNode(node)
             return node
