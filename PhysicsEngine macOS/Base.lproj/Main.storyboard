@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaDFRPlugin" version="14490.12"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <plugIn identifier="com.apple.SceneKitIBPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="the Touch Bar" minToolsVersion="8.1" minSystemVersion="10.12.2" requiredIntegratedClassName="NSTouchBar"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -712,23 +714,65 @@
                         <subviews>
                             <sceneView loops="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IAE-Sa-NoV">
                                 <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                                <touchBar key="touchBar" id="eBM-LS-sRQ">
+                                    <touchBarItems>
+                                        <touchBarGroupItem id="FZ6-fC-ImF">
+                                            <touchBar key="groupTouchBar" id="Rjn-RC-gz1">
+                                                <touchBarItems>
+                                                    <touchBarItem id="XjP-FR-eYa">
+                                                        <viewController key="viewController" id="PbL-02-uwi">
+                                                            <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="h8J-sa-Auw">
+                                                                <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                                                <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSLeftFacingTriangleTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QNh-O8-Ta4">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="system"/>
+                                                                </buttonCell>
+                                                                <connections>
+                                                                    <action selector="previousDemo:" target="XfG-lQ-9wD" id="MT2-vM-occ"/>
+                                                                </connections>
+                                                            </button>
+                                                        </viewController>
+                                                        <size key="designTimeSize" width="72" height="30"/>
+                                                    </touchBarItem>
+                                                    <touchBarItem id="EOi-Rr-z94">
+                                                        <viewController key="viewController" id="jt2-PX-3qB">
+                                                            <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="seW-pj-Z6K">
+                                                                <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                                                <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSRightFacingTriangleTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Knq-70-LCN">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" usesAppearanceFont="YES"/>
+                                                                </buttonCell>
+                                                                <connections>
+                                                                    <action selector="nextDemo:" target="XfG-lQ-9wD" id="q1x-UO-rMJ"/>
+                                                                </connections>
+                                                            </button>
+                                                        </viewController>
+                                                        <size key="designTimeSize" width="72" height="30"/>
+                                                    </touchBarItem>
+                                                </touchBarItems>
+                                            </touchBar>
+                                        </touchBarGroupItem>
+                                        <touchBarItem id="z25-kv-YWV">
+                                            <viewController key="viewController" id="zIo-q9-eu1">
+                                                <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OPc-Ep-SMQ">
+                                                    <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                                    <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CU2-gJ-HXo">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" usesAppearanceFont="YES"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="handleReset:" target="XfG-lQ-9wD" id="tlO-OX-4j5"/>
+                                                    </connections>
+                                                </button>
+                                            </viewController>
+                                            <size key="designTimeSize" width="72" height="30"/>
+                                        </touchBarItem>
+                                    </touchBarItems>
+                                </touchBar>
                             </sceneView>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BOO-VM-wHb">
-                                <rect key="frame" x="14" y="252" width="75" height="32"/>
-                                <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HEs-R7-BI6">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="handleReset:" target="XfG-lQ-9wD" id="wEW-sJ-kPe"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="IAE-Sa-NoV" secondAttribute="trailing" id="1jp-Ml-re0"/>
-                            <constraint firstItem="BOO-VM-wHb" firstAttribute="leading" secondItem="vmu-KV-Wzh" secondAttribute="leading" constant="20" symbolic="YES" id="304-Qd-RkQ"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="BOO-VM-wHb" secondAttribute="trailing" constant="20" symbolic="YES" id="MOJ-fT-5H7"/>
-                            <constraint firstItem="BOO-VM-wHb" firstAttribute="top" secondItem="vmu-KV-Wzh" secondAttribute="top" constant="20" symbolic="YES" id="QGR-y8-lEa"/>
                             <constraint firstAttribute="bottom" secondItem="IAE-Sa-NoV" secondAttribute="bottom" id="S3X-11-ArV"/>
                             <constraint firstItem="IAE-Sa-NoV" firstAttribute="leading" secondItem="vmu-KV-Wzh" secondAttribute="leading" id="Vlq-fW-8M1"/>
                             <constraint firstItem="IAE-Sa-NoV" firstAttribute="top" secondItem="vmu-KV-Wzh" secondAttribute="top" id="o5H-Tt-O0w"/>
@@ -740,7 +784,11 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="817"/>
+            <point key="canvasLocation" x="75" y="663"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="NSLeftFacingTriangleTemplate" width="9" height="12"/>
+        <image name="NSRightFacingTriangleTemplate" width="9" height="12"/>
+    </resources>
 </document>

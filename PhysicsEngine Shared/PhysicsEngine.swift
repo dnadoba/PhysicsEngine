@@ -42,6 +42,7 @@ struct Sphere {
     var position: Vector
     /// velicity in meter per second
     var velocity: Vector
+    /// mass in kilogramm
     var mass: Scalar { return (4/3) * .pi * radius}
     /// radius in meter
     let radius: Scalar
@@ -55,10 +56,12 @@ struct Sphere {
     /// - Parameters:
     ///   - Δt: elapsed time in seconds
     ///   - world: current world configuration
+
     mutating func update(Δt: TimeInterval, world: World) {
         velocity += world.gravity * Δt
         position += velocity * Δt
     }
+
     /// distance between `self` and the `other`
     ///
     /// - Parameter other: `Sphere`
@@ -142,7 +145,7 @@ final class PhysicsEngine {
     static let maximumΔt: TimeInterval = 1/30
     
     static let `default` = PhysicsEngine()
-    let world: World
+    private(set) var world: World
     private(set) var spheres: [Sphere] = []
     private(set) var planes: [Plane] = []
     weak var delegate: PhysicsEngineDelegate?
@@ -208,6 +211,12 @@ final class PhysicsEngine {
             Plane.init(support_vector: .init(x: 0, y: 0, z: 5), normal_vector: .init(x: 0, y: 0, z: -1)),
             Plane.init(support_vector: .init(x: 0, y: 8, z: 0), normal_vector: Vector(x: -1, y: -1, z: 0).normalized),
         ]
+    }
+    
+    func setConfig(_ config: PhysicsEngineConfig) {
+        self.planes = config.planes
+        self.spheres = config.spheres
+        self.world = config.world
     }
     func copy() -> PhysicsEngine {
         let engine = PhysicsEngine(world: world)

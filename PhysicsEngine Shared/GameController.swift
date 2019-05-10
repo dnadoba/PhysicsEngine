@@ -23,26 +23,76 @@ extension RandomAccessCollection {
         return indices.contains(i) ? self[i] : nil
     }
 }
-fileprivate let maxIterationCount = 100
+fileprivate let maxIterationCount = 400
+
+infix operator %%: MultiplicationPrecedence
+infix operator %%=: AssignmentPrecedence
+
+func %%<T: BinaryInteger>(a: T, b: T) -> T {
+    return ((a % b) + b) % b
+}
+func %%=<T: BinaryInteger>(a: inout T, b: T) {
+    a = a %% b
+}
 
 class GameController: NSObject, SCNSceneRendererDelegate {
     let physicsEngine: PhysicsEngine = .default
-    let spheres: [[SCNNode]]
+    var spheres: [[SCNNode]] = []
+    var planes: [SCNNode] = []
     let scene: SCNScene
     let sceneRenderer: SCNSceneRenderer
     var collisionParticleSystem = SCNParticleSystem(named: "SceneKit Particle System.scnp", inDirectory: nil)
-
+    let demos = PhysicsEngineConfig.all
+    private(set) var currentDemoIndex = 0 {
+        didSet { currentDemoIndex %%= demos.count }
+    }
+    var currentDemo: PhysicsEngineConfig {
+        return demos[currentDemoIndex]
+    }
     
     init(sceneRenderer renderer: SCNSceneRenderer) {
         sceneRenderer = renderer
         let scene = SCNScene(named: "Art.scnassets/scene.scn")!
         self.scene = scene
+        super.init()
+    
+        physicsEngine.delegate = self
+        sceneRenderer.delegate = self
+        sceneRenderer.scene = scene
+        
+        currentDemoDidChange()
+    }
+    
+    func nextDemo() {
+        currentDemoIndex += 1
+        currentDemoDidChange()
+    }
+    func previousDemo() {
+        currentDemoIndex -= 1
+        currentDemoDidChange()
+    }
+    private func currentDemoDidChange() {
+        setConfig(currentDemo)
+    }
+    
+    private func setConfig(_ config: PhysicsEngineConfig) {
+        for spheres in self.spheres {
+            for sphere in spheres {
+                sphere.removeFromParentNode()
+            }
+        }
+        for plane in planes {
+            plane.removeFromParentNode()
+        }
+        
+        physicsEngine.setConfig(config)
+        
         let sphereColors: [SCNColor] = [.red, .orange, .blue, .purple, .yellow, .cyan, .gray, .magenta, .green]
         
         spheres = zip(physicsEngine.spheres, 0...).map { (sphere, i) -> [SCNNode] in
             let geometry = SCNSphere(radius: CGFloat(sphere.radius))
             
-            let color = sphereColors[(i + 5) % sphereColors.count]
+            let color = sphereColors[(i + 6) % sphereColors.count]
             if let material = geometry.firstMaterial {
                 material.lightingModel = .physicallyBased
                 material.metalness.contents = 0.3
@@ -60,18 +110,8 @@ class GameController: NSObject, SCNSceneRendererDelegate {
             }
         }
         
-        
-        
-        let oriantations: [SCNVector3] = [
-            .init(-CGFloat.pi/2, 0, 0),
-            .init(0, 0, 0),
-            .init(0, CGFloat.pi/2, 0),
-            .init(0, -CGFloat.pi/2, 0),
-            .init(CGFloat.pi, 0, 0),
-            .init(CGFloat.pi/2, 0, -CGFloat.pi/4),
-        ]
-        zip(physicsEngine.planes, zip(oriantations, 0...)).forEach { args in
-            let (plane, (orientation, i)) = args
+        planes = zip(physicsEngine.planes,  0...).map { args in
+            let (plane, i) = args
             let geometry = SCNPlane(width: 15, height: 15)
             geometry.heightSegmentCount = 100
             geometry.widthSegmentCount = 100
@@ -84,23 +124,16 @@ class GameController: NSObject, SCNSceneRendererDelegate {
                 material.diffuse.contents = color
             }
             
-        
             let node = SCNNode(geometry: geometry)
-            node.eulerAngles = orientation
+            node.simdLook(at: .init(plane.normal_vector), up: node.simdWorldUp, localFront: -SCNNode.simdLocalFront)
             node.position = .init(plane.support_vector)
             scene.rootNode.addChildNode(node)
+            return node
         }
-
-        super.init()
-        physicsEngine.delegate = self
-        
-        sceneRenderer.delegate = self
-        
-        sceneRenderer.scene = scene
     }
     
     func resetSimulation() {
-        physicsEngine.reset()
+        physicsEngine.setConfig(currentDemo)
     }
     
     func highlightNodes(atPoint point: CGPoint) {

@@ -46,5 +46,10 @@ class GameViewController: NSViewController {
     @IBAction func handleReset(_ sender: Any) {
         gameController.resetSimulation()
     }
-    
+    @IBAction func nextDemo(_ sender: Any) {
+        gameController.nextDemo()
+    }
+    @IBAction func previousDemo(_ sender: Any) {
+        gameController.previousDemo()
+    }
 }
