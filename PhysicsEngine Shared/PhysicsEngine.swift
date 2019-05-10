@@ -151,7 +151,6 @@ final class PhysicsEngine {
     weak var delegate: PhysicsEngineDelegate?
     init(world: World = .earth) {
         self.world = world
-        self.reset()
     }
     /// computes the new position and velocity of all spheres
     /// usually called during the render loop
@@ -194,23 +193,6 @@ final class PhysicsEngine {
                 }
             }
         }
-    }
-    func reset() {
-        self.spheres = [
-            //                      x     y       z
-            Sphere(position: Vector(-2,   4,      2.1)),
-            Sphere(position: Vector(-2.1, 0.9,      2)),
-            Sphere(position: Vector(-4,   1.1,      1.9)),
-            Sphere(position: Vector(-3.1,   4,      1)),
-        ]
-        self.planes = [
-            Plane.init(support_vector: .init(x: 0, y: 0, z: 0), normal_vector: .init(x: 0, y: 1, z: 0)),
-            Plane.init(support_vector: .init(x: 0, y: 0, z: -5), normal_vector: .init(x: 0, y: 0, z: 1)),
-            Plane.init(support_vector: .init(x: -5, y: 0, z: 0), normal_vector: .init(x: 1, y: 0, z: 0)),
-            Plane.init(support_vector: .init(x: 5, y: 0, z: 0), normal_vector: .init(x: -1, y: 0, z: 0)),
-            Plane.init(support_vector: .init(x: 0, y: 0, z: 5), normal_vector: .init(x: 0, y: 0, z: -1)),
-            Plane.init(support_vector: .init(x: 0, y: 8, z: 0), normal_vector: Vector(x: -1, y: -1, z: 0).normalized),
-        ]
     }
     
     func setConfig(_ config: PhysicsEngineConfig) {

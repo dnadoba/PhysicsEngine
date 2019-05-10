@@ -19,6 +19,7 @@ struct PhysicsEngineConfig {
         .sphereCollistion2D,
         .sphereCollistion3D,
         .inclinedPlanes2D,
+        .someSpheresAndSomePlanes
     ]
     static let `default` = PhysicsEngineConfig()
     static let sphereOnly = PhysicsEngineConfig().addSphere(at: .init(0, 3, 0))
@@ -41,7 +42,7 @@ struct PhysicsEngineConfig {
     static let worldWithoutGravityAndPlaneOnEachSide = PhysicsEngineConfig.worldWithoutGravityAndPlaneOnTheLeftRightTopAndBottom
         .addPlane(.init(at: Vector(0, 0, 4),    direction: Vector(0, 0, -1)))
         .addPlane(.init(at: Vector(0, 0, -4),   direction: Vector(0, 0, 1)))
-    static let sphereCollistion3D = PhysicsEngineConfig.worldWithoutGravityAndPlaneOnTheLeftRightTopAndBottom
+    static let sphereCollistion3D = PhysicsEngineConfig.worldWithoutGravityAndPlaneOnEachSide
         .addSphere(at: .init(2, 2, 2),      velocity: Vector(-1, -1, -1).normalized)
         .addSphere(at: .init(-2, -2, -1),   velocity: Vector(1, 1, 1).normalized)
     static let worldWithoutGravityAndInclinedPlanes = PhysicsEngineConfig.default
@@ -51,6 +52,20 @@ struct PhysicsEngineConfig {
         .addPlane(.init(at: Vector(-2, -2, 0),    direction: Vector(1, 1, 0)))
     static let inclinedPlanes2D = PhysicsEngineConfig.worldWithoutGravityAndInclinedPlanes
         .addSphere(at: Vector(0, 2, 0), velocity: Vector(1, 0, 0))
+    static let someSpheresAndSomePlanes = PhysicsEngineConfig
+        .default
+        .setWorld(.earth)
+        .addSphere(Sphere(position: Vector(-2,   4,      2.1)))
+        .addSphere(Sphere(position: Vector(-2.1, 0.9,      2)))
+        .addSphere(Sphere(position: Vector(-4,   1.1,      1.9)))
+        .addSphere(Sphere(position: Vector(-3.1,   4,      1)))
+        .addPlane(Plane(support_vector: .init(x: 0, y: 0, z: 0), normal_vector: .init(x: 0, y: 1, z: 0)))
+        .addPlane(Plane(support_vector: .init(x: 0, y: 0, z: -5), normal_vector: .init(x: 0, y: 0, z: 1)))
+        .addPlane(Plane(support_vector: .init(x: -5, y: 0, z: 0), normal_vector: .init(x: 1, y: 0, z: 0)))
+        .addPlane(Plane(support_vector: .init(x: 5, y: 0, z: 0), normal_vector: .init(x: -1, y: 0, z: 0)))
+        .addPlane(Plane(support_vector: .init(x: 0, y: 0, z: 5), normal_vector: .init(x: 0, y: 0, z: -1)))
+        .addPlane(Plane(support_vector: .init(x: 0, y: 8, z: 0), normal_vector: Vector(x: -1, y: -1, z: 0).normalized))
+    
     
     var planes: [Plane] = []
     var spheres: [Sphere] = []
