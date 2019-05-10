@@ -10,11 +10,8 @@ import UIKit
 import SceneKit
 
 class GameViewController: UIViewController {
-
-    var gameView: SCNView {
-        return self.view as! SCNView
-    }
     
+    @IBOutlet weak var gameView: SCNView!
     var gameController: GameController!
     
     override func viewDidLoad() {
@@ -62,5 +59,11 @@ class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
-
+    @IBAction func nextDemo(_ sender: Any) {
+        gameController.nextDemo()
+    }
+    @IBAction func previousDemo(_ sender: Any) {
+        gameController.previousDemo()
+    }
+    
 }

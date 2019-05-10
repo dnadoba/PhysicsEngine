@@ -1,27 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <sceneKitView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="jVy-uP-6ha">
+                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="PhysicsEngine" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GYs-LP-cJo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    </sceneKitView>
+                        <subviews>
+                            <sceneKitView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eGL-bp-xaG">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </sceneKitView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mda-i3-UaM">
+                                <rect key="frame" x="16" y="597" width="59" height="30"/>
+                                <state key="normal" title="Previous"/>
+                                <connections>
+                                    <action selector="previousDemo:" destination="BV1-FR-VrT" eventType="touchUpInside" id="DYX-vp-EgQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oJA-xg-jrB">
+                                <rect key="frame" x="327" y="597" width="32" height="30"/>
+                                <state key="normal" title="Next"/>
+                                <connections>
+                                    <action selector="nextDemo:" destination="BV1-FR-VrT" eventType="touchUpInside" id="nrI-vJ-cIt"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="O6n-0K-Abg" firstAttribute="bottom" secondItem="oJA-xg-jrB" secondAttribute="bottom" constant="40" id="9jD-Lc-7nA"/>
+                            <constraint firstItem="eGL-bp-xaG" firstAttribute="leading" secondItem="GYs-LP-cJo" secondAttribute="leading" id="Age-6c-T08"/>
+                            <constraint firstItem="Mda-i3-UaM" firstAttribute="leading" secondItem="O6n-0K-Abg" secondAttribute="leading" constant="16" id="Ai5-ZT-UGi"/>
+                            <constraint firstItem="O6n-0K-Abg" firstAttribute="bottom" secondItem="Mda-i3-UaM" secondAttribute="bottom" constant="40" id="FlK-e2-21B"/>
+                            <constraint firstAttribute="top" secondItem="eGL-bp-xaG" secondAttribute="top" id="JGe-Pn-udW"/>
+                            <constraint firstAttribute="bottom" secondItem="eGL-bp-xaG" secondAttribute="bottom" id="TpJ-bR-Zts"/>
+                            <constraint firstItem="O6n-0K-Abg" firstAttribute="trailing" secondItem="oJA-xg-jrB" secondAttribute="trailing" constant="16" id="WxP-jB-QzE"/>
+                            <constraint firstAttribute="trailing" secondItem="eGL-bp-xaG" secondAttribute="trailing" id="ZhZ-Wk-BCW"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="O6n-0K-Abg"/>
+                    </view>
                     <connections>
-                        <outlet property="view" destination="jVy-uP-6ha" id="gzf-zj-nO0"/>
+                        <outlet property="gameView" destination="eGL-bp-xaG" id="4hS-5a-XP6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="53.600000000000001" y="52.623688155922046"/>
         </scene>
     </scenes>
 </document>
