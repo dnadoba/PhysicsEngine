@@ -65,11 +65,13 @@ struct PhysicsEngineConfig {
         .addPlane(Plane(support_vector: .init(x: 5, y: 0, z: 0), normal_vector: .init(x: -1, y: 0, z: 0)))
         .addPlane(Plane(support_vector: .init(x: 0, y: 0, z: 5), normal_vector: .init(x: 0, y: 0, z: -1)))
         .addPlane(Plane(support_vector: .init(x: 0, y: 8, z: 0), normal_vector: Vector(x: -1, y: -1, z: 0).normalized))
+        .setIterationCount(200)
     
     
     var planes: [Plane] = []
     var spheres: [Sphere] = []
     var world: World = .zero
+    var iterationCount: Int = 1
 }
 
 extension PhysicsEngineConfig {
@@ -99,6 +101,11 @@ extension PhysicsEngineConfig {
     func setWorld(_ world: World) -> PhysicsEngineConfig {
         var copy = self
         copy.world = world
+        return copy
+    }
+    func setIterationCount(_ count: Int) -> PhysicsEngineConfig {
+        var copy = self
+        copy.iterationCount = count
         return copy
     }
 }

@@ -23,7 +23,6 @@ extension RandomAccessCollection {
         return indices.contains(i) ? self[i] : nil
     }
 }
-fileprivate let maxIterationCount = 400
 
 infix operator %%: MultiplicationPrecedence
 infix operator %%=: AssignmentPrecedence
@@ -103,7 +102,7 @@ class GameController: NSObject, SCNSceneRendererDelegate {
             
             let node = SCNNode(geometry: geometry)
             
-            return (0..<maxIterationCount).map { _ in
+            return (0..<config.iterationCount).map { _ in
                 let copy = node.clone()
                 scene.rootNode.addChildNode(copy)
                 return copy
@@ -169,15 +168,17 @@ class GameController: NSObject, SCNSceneRendererDelegate {
     var lastUpdateTime: TimeInterval?
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         renderer.isPlaying = true
+        defer { self.lastUpdateTime = time }
         // Called before each frame is rendered
-        
-        let spheres = simulateUntilCollisionWithASphere(engine: physicsEngine.copy(), Δt: 1/60, maxIterationCount: maxIterationCount)
-        physicsEngine.update(elapsedTime: 1/60)
+        let lastUpdateTime = self.lastUpdateTime ?? time
+        let Δt = time - lastUpdateTime
+        let spheres = simulateUntilCollisionWithASphere(engine: physicsEngine.copy(), Δt: 1/60, maxIterationCount: currentDemo.iterationCount)
+        physicsEngine.update(elapsedTime: Δt)
         updateSpheresFromPhysicsEngine(spheres: spheres)
     }
     func updateSpheresFromPhysicsEngine(spheres: [Int: [Sphere]]) {
         for (id, sphereNodes) in self.spheres.enumerated() {
-            for i in 0..<maxIterationCount {
+            for i in 0..<currentDemo.iterationCount {
                 let node = sphereNodes[i]
                 if let sphere = spheres[id]?[safe: i] {
                     node.position = SCNVector3(sphere.position)
@@ -242,7 +243,7 @@ class CallbackDelegate: PhysicsEngineDelegate {
     }
 }
 
-func simulateUntilCollisionWithASphere(engine: PhysicsEngine, Δt: TimeInterval, maxIterationCount: Int = 10 * 60) -> [Int: [Sphere]] {
+func simulateUntilCollisionWithASphere(engine: PhysicsEngine, Δt: TimeInterval, maxIterationCount: Int) -> [Int: [Sphere]] {
     var spheres : [Int: [Sphere]] = [:]
     var spheresThatDidCollide = Set<Int>()
     let delegate = CallbackDelegate()
