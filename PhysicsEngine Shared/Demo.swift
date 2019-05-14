@@ -72,6 +72,7 @@ struct PhysicsEngineConfig {
     var spheres: [Sphere] = []
     var world: World = .zero
     var iterationCount: Int = 1
+    var dynamicΔt = true
 }
 
 extension PhysicsEngineConfig {

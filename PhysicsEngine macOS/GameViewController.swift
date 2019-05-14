@@ -12,12 +12,15 @@ import SceneKit
 class GameViewController: NSViewController {
     
     @IBOutlet weak var gameView: SCNView!
+    @IBOutlet weak var iterationCountSlider: NSSlider!
+    @IBOutlet weak var dynamicΔtSegmentedControl: NSSegmentedControl!
     var gameController: GameController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.gameController = GameController(sceneRenderer: gameView)
+        self.gameController.delegate = self
         
         // Allow the user to manipulate the camera
         self.gameView.allowsCameraControl = true
@@ -51,5 +54,18 @@ class GameViewController: NSViewController {
     }
     @IBAction func previousDemo(_ sender: Any) {
         gameController.previousDemo()
+    }
+    @IBAction func ΔtSelectionDidChange(_ sender: NSSegmentedControl) {
+        gameController.dynamicΔt = sender.selectedSegment == 1
+    }
+    @IBAction func itterationCountSliderDidChange(_ sender: NSSlider) {
+        gameController.iterationCount = sender.integerValue
+    }
+}
+
+extension GameViewController: GameControllerDelegate {
+    func gameController(_ gameController: GameController, didChangeConfig newConfig: PhysicsEngineConfig) {
+        iterationCountSlider.integerValue = newConfig.iterationCount
+        dynamicΔtSegmentedControl.selectedSegment = newConfig.dynamicΔt ? 1 : 0
     }
 }
