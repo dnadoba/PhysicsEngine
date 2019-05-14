@@ -58,8 +58,11 @@ struct Sphere {
     ///   - world: current world configuration
 
     mutating func update(Δt: TimeInterval, world: World) {
-        velocity += world.gravity * Δt
-        position += velocity * Δt
+//      let estimated_position = position + velocity * 0.5 * Δt
+        let estimated_velocity = velocity + world.gravity * 0.5 * Δt
+        
+        position = position + estimated_velocity * Δt
+        velocity = velocity + world.gravity * Δt
     }
 
     /// distance between `self` and the `other`
