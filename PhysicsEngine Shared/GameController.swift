@@ -51,7 +51,7 @@ class GameController: NSObject, SCNSceneRendererDelegate {
     private(set) var currentDemoIndex = 0 {
         didSet { currentDemoIndex %%= demos.count }
     }
-    private var currentDemo: PhysicsEngineConfig {
+    private(set) var currentDemo: PhysicsEngineConfig {
         get { return demos[currentDemoIndex] }
         set { demos[currentDemoIndex] = newValue }
     }

@@ -39,6 +39,7 @@ class GameViewController: NSViewController {
         var gestureRecognizers = gameView.gestureRecognizers
         gestureRecognizers.insert(clickGesture, at: 0)
         self.gameView.gestureRecognizers = gestureRecognizers
+        self.gameController(gameController, didChangeConfig: gameController.currentDemo)
     }
     
     override func keyUp(with event: NSEvent) {
