@@ -725,48 +725,12 @@
                                                         <font key="font" usesAppearanceFont="YES"/>
                                                     </buttonCell>
                                                     <connections>
-                                                        <action selector="handleReset:" target="XfG-lQ-9wD" id="tlO-OX-4j5"/>
+                                                        <action selector="handleReset:" target="XfG-lQ-9wD" id="mML-Ut-dnd"/>
                                                     </connections>
                                                 </button>
                                             </viewController>
                                             <size key="designTimeSize" width="72" height="30"/>
                                         </touchBarItem>
-                                        <touchBarGroupItem id="FZ6-fC-ImF">
-                                            <touchBar key="groupTouchBar" id="Rjn-RC-gz1">
-                                                <touchBarItems>
-                                                    <touchBarItem id="XjP-FR-eYa">
-                                                        <viewController key="viewController" id="PbL-02-uwi">
-                                                            <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="h8J-sa-Auw">
-                                                                <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
-                                                                <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSLeftFacingTriangleTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QNh-O8-Ta4">
-                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                    <font key="font" metaFont="system"/>
-                                                                </buttonCell>
-                                                                <connections>
-                                                                    <action selector="previousDemo:" target="XfG-lQ-9wD" id="MT2-vM-occ"/>
-                                                                </connections>
-                                                            </button>
-                                                        </viewController>
-                                                        <size key="designTimeSize" width="72" height="30"/>
-                                                    </touchBarItem>
-                                                    <touchBarItem id="EOi-Rr-z94">
-                                                        <viewController key="viewController" id="jt2-PX-3qB">
-                                                            <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="seW-pj-Z6K">
-                                                                <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
-                                                                <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSRightFacingTriangleTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Knq-70-LCN">
-                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                    <font key="font" usesAppearanceFont="YES"/>
-                                                                </buttonCell>
-                                                                <connections>
-                                                                    <action selector="nextDemo:" target="XfG-lQ-9wD" id="q1x-UO-rMJ"/>
-                                                                </connections>
-                                                            </button>
-                                                        </viewController>
-                                                        <size key="designTimeSize" width="72" height="30"/>
-                                                    </touchBarItem>
-                                                </touchBarItems>
-                                            </touchBar>
-                                        </touchBarGroupItem>
                                         <touchBarItem id="qy5-pD-TOK">
                                             <viewController key="viewController" id="3cB-Iu-d6u">
                                                 <segmentedControl key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xvw-sU-TrB">
@@ -775,7 +739,7 @@
                                                         <font key="font" metaFont="system"/>
                                                         <segments>
                                                             <segment label="Δt = 1/60" width="94"/>
-                                                            <segment label="Δt = dynamic" width="94" selected="YES" tag="1"/>
+                                                            <segment label="Δt = dynamic" width="94" tag="1"/>
                                                         </segments>
                                                     </segmentedCell>
                                                     <connections>
@@ -785,6 +749,19 @@
                                             </viewController>
                                             <size key="designTimeSize" width="200" height="30"/>
                                         </touchBarItem>
+                                        <touchBarItem id="kWl-Sn-5Va">
+                                            <viewController key="viewController" id="x2s-j4-MdU">
+                                                <textField key="view" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9Fj-EY-UjK">
+                                                    <rect key="frame" x="0.0" y="0.0" width="114" height="19"/>
+                                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Iteration Count:" id="reo-lB-xC4">
+                                                        <font key="font" usesAppearanceFont="YES"/>
+                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                            </viewController>
+                                            <size key="designTimeSize" width="110" height="19"/>
+                                        </touchBarItem>
                                         <sliderTouchBarItem id="2LT-sH-7jh">
                                             <sliderAccessory key="minimumValueAccessory" id="Dgc-4g-8E8">
                                                 <sliderAccessoryBehavior key="behavior" id="1Ky-Ru-jPj"/>
@@ -793,8 +770,8 @@
                                                 <sliderAccessoryBehavior key="behavior" id="RPm-cP-MIP"/>
                                             </sliderAccessory>
                                             <slider key="slider" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J2o-24-hNi">
-                                                <rect key="frame" x="0.0" y="0.0" width="237" height="30"/>
-                                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="1" maxValue="200" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="vHW-Go-QVh"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="279" height="30"/>
+                                                <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="1" maxValue="500" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="vHW-Go-QVh"/>
                                                 <connections>
                                                     <action selector="itterationCountSliderDidChange:" target="XfG-lQ-9wD" id="mx4-b4-JCR"/>
                                                 </connections>
@@ -823,8 +800,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="NSLeftFacingTriangleTemplate" width="9" height="12"/>
-        <image name="NSRightFacingTriangleTemplate" width="9" height="12"/>
         <image name="buttonCell:CU2-gJ-HXo:image" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGVVZYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8QEgcI

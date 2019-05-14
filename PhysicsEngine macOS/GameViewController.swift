@@ -8,6 +8,7 @@
 
 import Cocoa
 import SceneKit
+import Carbon
 
 class GameViewController: NSViewController {
     
@@ -40,6 +41,15 @@ class GameViewController: NSViewController {
         self.gameView.gestureRecognizers = gestureRecognizers
     }
     
+    override func keyUp(with event: NSEvent) {
+        switch Int(event.keyCode) {
+        case kVK_LeftArrow: gameController.previousDemo()
+        case kVK_RightArrow: gameController.nextDemo()
+        default: super.keyUp(with: event)
+        }
+    }
+    
+    
     @objc
     func handleClick(_ gestureRecognizer: NSGestureRecognizer) {
         // Highlight the clicked nodes
@@ -48,12 +58,6 @@ class GameViewController: NSViewController {
     }
     @IBAction func handleReset(_ sender: Any) {
         gameController.resetSimulation()
-    }
-    @IBAction func nextDemo(_ sender: Any) {
-        gameController.nextDemo()
-    }
-    @IBAction func previousDemo(_ sender: Any) {
-        gameController.previousDemo()
     }
     @IBAction func ΔtSelectionDidChange(_ sender: NSSegmentedControl) {
         gameController.dynamicΔt = sender.selectedSegment == 1

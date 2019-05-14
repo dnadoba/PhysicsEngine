@@ -26,7 +26,11 @@ struct PhysicsEngineConfig {
     static let sphereWithStartVelocity = PhysicsEngineConfig.sphereOnly.setVelocityOfAllSpheres(.init(0.5, 0, 0))
     static let sphereWithGravity = PhysicsEngineConfig.sphereOnly.setWorld(.earth)
     static let sphereWithGravityAndFloor = PhysicsEngineConfig.sphereWithGravity.addPlane(at: .zero, direction: .up)
-    static let sphereWithStartVelocityAndGravityAndFloor = PhysicsEngineConfig.sphereWithGravityAndFloor.setVelocityOfAllSpheres(.init(0.5, 0.5, 0))
+    static let sphereWithStartVelocityAndGravityAndFloor = PhysicsEngineConfig.default
+        .addSphere(at: .init(-5, 3, 0))
+        .setVelocityOfAllSpheres(.init(0.5, 0.5, 0))
+        .setWorld(.earth)
+        .addPlane(at: .zero, direction: .up)
     static let worldWithoutGravityAndPlaneOnTheLeftAndRight = PhysicsEngineConfig.default
         .addPlane(.init(at: Vector(4, 0, 0),    direction: Vector(-1, 0, 0)))
         .addPlane(.init(at: Vector(-4, 0, 0),   direction: Vector(1, 0, 0)))
