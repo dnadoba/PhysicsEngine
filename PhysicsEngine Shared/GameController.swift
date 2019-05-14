@@ -34,20 +34,28 @@ func %%=<T: BinaryInteger>(a: inout T, b: T) {
     a = a %% b
 }
 
+protocol GameControllerDelegate: AnyObject {
+    func gameController(_ gameController: GameController, didChangeConfig newConfig: PhysicsEngineConfig)
+}
+
 class GameController: NSObject, SCNSceneRendererDelegate {
+    weak var delegate: GameControllerDelegate?
     let physicsEngine: PhysicsEngine = .default
     var spheres: [[SCNNode]] = []
     var planes: [SCNNode] = []
     let scene: SCNScene
     let sceneRenderer: SCNSceneRenderer
     var collisionParticleSystem = SCNParticleSystem(named: "SceneKit Particle System.scnp", inDirectory: nil)
-    let demos = PhysicsEngineConfig.all
+    let originalDemos = PhysicsEngineConfig.all
+    var demos = PhysicsEngineConfig.all
     private(set) var currentDemoIndex = 0 {
         didSet { currentDemoIndex %%= demos.count }
     }
-    var currentDemo: PhysicsEngineConfig {
-        return demos[currentDemoIndex]
+    private var currentDemo: PhysicsEngineConfig {
+        get { return demos[currentDemoIndex] }
+        set { demos[currentDemoIndex] = newValue }
     }
+    
     
     init(sceneRenderer renderer: SCNSceneRenderer) {
         sceneRenderer = renderer
@@ -70,11 +78,32 @@ class GameController: NSObject, SCNSceneRendererDelegate {
         currentDemoIndex -= 1
         currentDemoDidChange()
     }
-    private func currentDemoDidChange() {
-        setConfig(currentDemo)
+    var dynamicΔt: Bool {
+        get { return currentDemo.dynamicΔt }
+        set { currentDemo.dynamicΔt = newValue }
+    }
+    var iterationCount: Int {
+        get { return currentDemo.iterationCount }
+        set {
+            currentDemo.iterationCount = newValue
+            updateScene()
+        }
     }
     
-    private func setConfig(_ config: PhysicsEngineConfig) {
+    func resetSimulation() {
+        currentDemo = originalDemos[currentDemoIndex]
+        currentDemoDidChange()
+    }
+    
+    private func currentDemoDidChange() {
+        setConfig(currentDemo)
+        delegate?.gameController(self, didChangeConfig: currentDemo)
+    }
+    private func updateScene() {
+        clearScene()
+        initScene()
+    }
+    private func clearScene() {
         for spheres in self.spheres {
             for sphere in spheres {
                 sphere.removeFromParentNode()
@@ -83,11 +112,10 @@ class GameController: NSObject, SCNSceneRendererDelegate {
         for plane in planes {
             plane.removeFromParentNode()
         }
-        
-        physicsEngine.setConfig(config)
-        
+    }
+    private func initScene() {
         let sphereColors: [SCNColor] = [.red, .orange, .blue, .purple, .yellow, .cyan, .gray, .magenta, .green]
-        
+        let config = currentDemo
         spheres = zip(physicsEngine.spheres, 0...).map { (sphere, i) -> [SCNNode] in
             let geometry = SCNSphere(radius: CGFloat(sphere.radius))
             
@@ -134,8 +162,10 @@ class GameController: NSObject, SCNSceneRendererDelegate {
         }
     }
     
-    func resetSimulation() {
-        physicsEngine.setConfig(currentDemo)
+    private func setConfig(_ config: PhysicsEngineConfig) {
+        clearScene()
+        physicsEngine.setConfig(config)
+        initScene()
     }
     
     func highlightNodes(atPoint point: CGPoint) {
@@ -171,14 +201,16 @@ class GameController: NSObject, SCNSceneRendererDelegate {
         defer { self.lastUpdateTime = time }
         // Called before each frame is rendered
         let lastUpdateTime = self.lastUpdateTime ?? time
-        let Δt = time - lastUpdateTime
+        
+        let Δt: TimeInterval = currentDemo.dynamicΔt ? time - lastUpdateTime : 1/60
+        
         let spheres = simulateUntilCollisionWithASphere(engine: physicsEngine.copy(), Δt: 1/60, maxIterationCount: currentDemo.iterationCount)
         physicsEngine.update(elapsedTime: Δt)
         updateSpheresFromPhysicsEngine(spheres: spheres)
     }
     func updateSpheresFromPhysicsEngine(spheres: [Int: [Sphere]]) {
         for (id, sphereNodes) in self.spheres.enumerated() {
-            for i in 0..<currentDemo.iterationCount {
+            for i in 0..<sphereNodes.count {
                 let node = sphereNodes[i]
                 if let sphere = spheres[id]?[safe: i] {
                     node.position = SCNVector3(sphere.position)
