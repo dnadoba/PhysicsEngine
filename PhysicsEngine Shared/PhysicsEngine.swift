@@ -56,14 +56,20 @@ struct Sphere {
     /// - Parameters:
     ///   - Δt: elapsed time in seconds
     ///   - world: current world configuration
-
     mutating func update(Δt: TimeInterval, world: World) {
+//        position += velocity * Δt
+//        velocity += world.gravity * Δt
+        
+        
 //      let estimated_position = position + velocity * 0.5 * Δt
         let estimated_velocity = velocity + world.gravity * 0.5 * Δt
         
         position = position + estimated_velocity * Δt
         velocity = velocity + world.gravity * Δt
     }
+    //    funktioniert:
+
+    
 
     /// distance between `self` and the `other`
     ///
@@ -124,6 +130,12 @@ struct Sphere {
         position -= other.normal_vector * distance * 2
         velocity = reflect(velocity, n: other.normal_vector)
         
+        let vn = other.normal_vector * (simd_dot(other.normal_vector, velocity) / simd_dot(other.normal_vector, other.normal_vector))
+        let time_since_collision = abs(distance / simd_length(vn))
+        let velocity_change_gravitation = time_since_collision * world.gravity
+        velocity -= reflect(velocity_change_gravitation, n: other.normal_vector)
+        velocity += velocity_change_gravitation
+        
         return collision_point
     }
 }
@@ -161,6 +173,7 @@ final class PhysicsEngine {
     /// - Parameter elapsedTime: elapsed time in seconds since previous update
     func update(elapsedTime: TimeInterval) {
         let Δt = min(elapsedTime, PhysicsEngine.maximumΔt)
+        
         for i in spheres.indices {
             spheres[i].update(Δt: Δt, world: world)
         }

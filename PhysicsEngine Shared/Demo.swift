@@ -19,7 +19,15 @@ struct PhysicsEngineConfig {
         .sphereCollistion2D,
         .sphereCollistion3D,
         .inclinedPlanes2D,
-        .someSpheresAndSomePlanes
+        .someSpheresAndSomePlanes,
+        .sebSingleSphere,
+        .sebMovingSingleSphere,
+        .sebTwoSpheresSameMass,
+        .sebTwoSpheresDifferentMass,
+        .sebTwoSpheresNotAligned,
+        .sebTwoPlanesSingleSphere,
+        .sebThreePlanesSingleSphere,
+        .sebPresentAllTogether
     ]
     static let `default` = PhysicsEngineConfig()
     static let sphereOnly = PhysicsEngineConfig().addSphere(at: .init(0, 3, 0))
@@ -66,6 +74,40 @@ struct PhysicsEngineConfig {
         .addPlane(Plane(support_vector: .init(x: 0, y: 0, z: 5), normal_vector: .init(x: 0, y: 0, z: -1)))
         .addPlane(Plane(support_vector: .init(x: 0, y: 8, z: 0), normal_vector: Vector(x: -1, y: -1, z: 0).normalized))
         .setIterationCount(200)
+    
+    static let sebDefault = PhysicsEngineConfig
+        .default
+        .setWorld(.earth)
+        .addPlane(.init(at: .zero, direction: Vector(0, 1, 0)))
+    static let sebSingleSphere = sebDefault
+        .addSphere(at: .init(0, 3, 0),  velocity: .zero)
+    static let sebMovingSingleSphere = sebDefault
+        .addSphere(at: .init(-5, 3, 0),  velocity: Vector(2, 0, 0))
+    static let sebTwoSpheresSameMass = sebDefault
+        .addSphere(at: .init(0, 3, 0),  velocity: .zero)
+        .addSphere(at: .init(0, 5, 0),  velocity: .zero)
+    static let sebTwoSpheresDifferentMass = sebDefault
+        .addSphere(at: .init(0, 3, 0),  velocity: .zero, radius: 1)
+        .addSphere(at: .init(0, 5, 0),  velocity: .zero)
+    static let sebTwoSpheresNotAligned = sebDefault
+        .addSphere(at: .init(0, 3, 0),  velocity: Vector(0, 7, 0))
+        .addSphere(at: .init(0.1, 7, 0),  velocity: .zero)
+    static let sebTwoPlanesSingleSphere = sebDefault
+        .addSphere(at: .init(0, 3, 0),  velocity: Vector(5, 0, 0))
+        .addPlane(.init(at: .init(-5, 5, 0), direction: Vector(1, 0, 0)))
+        .addPlane(.init(at: .init(5, 5, 0), direction: Vector(-1, 0, 0)))
+    static let sebThreePlanesSingleSphere = sebTwoPlanesSingleSphere
+        .addPlane(.init(at: .init(-3, 3, 0), direction: Vector(1, 1, 0)))
+    static let sebPresentAllTogether = sebTwoPlanesSingleSphere
+        .addSphere(at: .init(-2, 4, 3),  velocity: Vector(1.4, 1.1, -3.2), radius: 1)
+        .addSphere(at: .init(2, 2, 2),  velocity: Vector(-1.5, 3.2, -0.3), radius: 0.8)
+        .addSphere(at: .init(1, 1, 1),  velocity: Vector(1.5, -3.2, -2.3))
+        .addSphere(at: .init(2, 4, -2),  velocity: Vector(-1.5, 3.2, 0.3))
+        .addPlane(.init(at: .init(0, 5, -5), direction: Vector(0, 0, 1)))
+        .addPlane(.init(at: .init(0, 5, 5), direction: Vector(0, 0, -1)))
+        .addPlane(.init(at: .init(-3, 3, -3), direction: Vector(1, 1, 1)))
+
+    
     
     
     var planes: [Plane] = []
