@@ -48,7 +48,7 @@ struct Sphere {
     /// velicity in meter per second
     var velocity: Vector
     /// mass in kilogramm
-    var mass: Scalar { return (4/3) * .pi * radius}
+    var mass: Scalar { return (4/3) * .pi * radius * radius * radius }
     /// radius in meter
     let radius: Scalar
     init(position: Vector, velocity: Vector = .zero, radius: Scalar = 0.5) {
