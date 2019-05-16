@@ -867,7 +867,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = Q48JHNAZJ9;
+				DEVELOPMENT_TEAM = XKQRPFVM7Z;
 				INFOPLIST_FILE = "PhysicsEngine macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

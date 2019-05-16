@@ -17,6 +17,7 @@ class InterfaceController: WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         gameController = GameController(sceneRenderer: scnInterface)
+        gameController.previousDemo()
     }
     
     @IBAction func handleTap(_ gestureRecognizer: WKTapGestureRecognizer) {

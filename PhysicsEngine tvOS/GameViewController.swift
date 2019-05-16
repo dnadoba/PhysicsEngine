@@ -38,6 +38,7 @@ class GameViewController: UIViewController {
         var gestureRecognizers = gameView.gestureRecognizers ?? []
         gestureRecognizers.insert(tapGesture, at: 0)
         self.gameView.gestureRecognizers = gestureRecognizers
+        gameController.previousDemo()
     }
     
     @objc
