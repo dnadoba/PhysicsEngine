@@ -25,6 +25,11 @@ extension Vector {
     static let up = Vector(0, 1, 0)
 }
 
+infix operator •: MultiplicationPrecedence
+func •(lhs: Vector, rhs: Vector) -> Double {
+    return dot(lhs, rhs)
+}
+
 struct Plane {
     var support_vector: Vector
     var normal_vector: Vector
@@ -80,7 +85,7 @@ struct Sphere {
         return centerDistance - radius - other.radius
     }
     func distance(to other: Plane) -> Scalar {
-        return simd_dot(position - other.support_vector, other.normal_vector) - radius
+        return (position - other.support_vector) • other.normal_vector - radius
     }
     func collides(with other: Sphere) -> Bool {
         return distance(to: other) <= 0
@@ -97,10 +102,10 @@ struct Sphere {
     mutating func resolveCollision(with other: inout Sphere, Δt: TimeInterval, world: World) {
         let nr = other.position - position
         
-        let vn_s = nr * (simd_dot(nr, velocity) / simd_dot(nr, nr))
+        let vn_s = nr * ((nr • velocity) / (nr • nr))
         let ve_s = velocity - vn_s
         
-        let vn_o = nr * (simd_dot(nr, other.velocity) / simd_dot(nr, nr))
+        let vn_o = nr * ((nr • other.velocity) / (nr • nr))
         let ve_o = other.velocity - vn_o
         
         let sum_mass = mass + other.mass
@@ -130,7 +135,7 @@ struct Sphere {
         position -= other.normal_vector * distance * 2
         velocity = reflect(velocity, n: other.normal_vector)
         
-        let vn = other.normal_vector * (simd_dot(other.normal_vector, velocity) / simd_dot(other.normal_vector, other.normal_vector))
+        let vn = other.normal_vector * ((other.normal_vector • velocity) / (other.normal_vector • other.normal_vector))
         let time_since_collision = abs(distance / simd_length(vn))
         let velocity_change_gravitation = time_since_collision * world.gravity
         velocity -= reflect(velocity_change_gravitation, n: other.normal_vector)
