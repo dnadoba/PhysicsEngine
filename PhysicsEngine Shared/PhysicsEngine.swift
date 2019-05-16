@@ -151,8 +151,21 @@ struct World {
 }
 
 protocol PhysicsEngineDelegate: AnyObject {
-    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, sphereId: Int, and other: Sphere, otherId: Int, at collisionPoint: Vector)
-    func pyhsicEngine(_ engine: PhysicsEngine, didDetectCollisionBetween sphere: Sphere, sphereId: Int, and other: Plane, at collisionPoint: Vector)
+    func pyhsicEngine(
+        _ engine: PhysicsEngine,
+        didDetectCollisionBetween sphere: Sphere,
+        sphereId: Int,
+        and other: Sphere,
+        otherId: Int,
+        at collisionPoint: Vector
+    )
+    func pyhsicEngine(
+        _ engine: PhysicsEngine,
+        didDetectCollisionBetween sphere: Sphere,
+        sphereId: Int,
+        and other: Plane,
+        at collisionPoint: Vector
+    )
 }
 
 final class PhysicsEngine {
@@ -174,10 +187,16 @@ final class PhysicsEngine {
     func update(elapsedTime: TimeInterval) {
         let Δt = min(elapsedTime, PhysicsEngine.maximumΔt)
         
+        updateSpheres(Δt: Δt)
+        detectAndResolveCollsions(Δt: Δt)
+    }
+    
+    private func updateSpheres(Δt: Scalar) {
         for i in spheres.indices {
             spheres[i].update(Δt: Δt, world: world)
         }
-        
+    }
+    private func detectAndResolveCollsions(Δt: Scalar) {
         // check for collisions between all spheres exactly once
         for i in spheres.indices {
             // do not test collision with itself and skip all previous spheres
