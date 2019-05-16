@@ -10,11 +10,28 @@ import Cocoa
 import SceneKit
 import Carbon
 
+extension PhysicsEngine.Algorithm {
+    init?(segmentIndex: Int) {
+        switch segmentIndex {
+        case 0: self = .euler
+        case 1: self = .midpoint
+        default: return nil
+        }
+    }
+    var segmentIndex: Int {
+        switch self {
+        case .euler: return 0
+        case .midpoint: return 1
+        }
+    }
+}
+
 class GameViewController: NSViewController {
     
     @IBOutlet weak var gameView: SCNView!
     @IBOutlet weak var iterationCountSlider: NSSlider!
     @IBOutlet weak var dynamicΔtSegmentedControl: NSSegmentedControl!
+    @IBOutlet weak var algorithmSegmentControl: NSSegmentedControl!
     var gameController: GameController!
     
     override func viewDidLoad() {
@@ -66,11 +83,16 @@ class GameViewController: NSViewController {
     @IBAction func itterationCountSliderDidChange(_ sender: NSSlider) {
         gameController.iterationCount = sender.integerValue
     }
+    @IBAction func algorithmDidChange(_ sender: NSSegmentedControl) {
+        guard let algorithm = PhysicsEngine.Algorithm(segmentIndex: sender.selectedSegment) else { return }
+        gameController.algorithm = algorithm
+    }
 }
 
 extension GameViewController: GameControllerDelegate {
     func gameController(_ gameController: GameController, didChangeConfig newConfig: PhysicsEngineConfig) {
         iterationCountSlider.integerValue = newConfig.iterationCount
         dynamicΔtSegmentedControl.selectedSegment = newConfig.dynamicΔt ? 1 : 0
+        algorithmSegmentControl.selectedSegment = newConfig.algorithm.segmentIndex
     }
 }

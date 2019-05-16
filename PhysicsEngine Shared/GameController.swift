@@ -82,6 +82,13 @@ class GameController: NSObject, SCNSceneRendererDelegate {
         get { return currentDemo.dynamicΔt }
         set { currentDemo.dynamicΔt = newValue }
     }
+    var algorithm: PhysicsEngine.Algorithm {
+        get { return currentDemo.algorithm }
+        set {
+            currentDemo.algorithm = newValue
+            physicsEngine.algorithm = newValue
+        }
+    }
     var iterationCount: Int {
         get { return currentDemo.iterationCount }
         set {

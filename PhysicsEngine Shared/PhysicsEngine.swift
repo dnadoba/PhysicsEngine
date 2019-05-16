@@ -56,23 +56,27 @@ struct Sphere {
         self.velocity = velocity
         self.radius = radius
     }
-    /// updates position and velocity of this `Sphere`
+    /// updates position and velocity of this `Sphere` using euler's method
     ///
     /// - Parameters:
     ///   - Δt: elapsed time in seconds
     ///   - world: current world configuration
-    mutating func update(Δt: TimeInterval, world: World) {
-//        position += velocity * Δt
-//        velocity += world.gravity * Δt
-        
-        
+    mutating func eulerUpdate(Δt: TimeInterval, world: World) {
+        position += velocity * Δt
+        velocity += world.gravity * Δt
+    }
+    /// updates position and velocity of this `Sphere` using middle point method
+    ///
+    /// - Parameters:
+    ///   - Δt: elapsed time in seconds
+    ///   - world: current world configuration
+    mutating func midpointUpdate(Δt: TimeInterval, world: World) {
 //      let estimated_position = position + velocity * 0.5 * Δt
         let estimated_velocity = velocity + world.gravity * 0.5 * Δt
         
-        position = position + estimated_velocity * Δt
-        velocity = velocity + world.gravity * Δt
+        position += estimated_velocity * Δt
+        velocity += world.gravity * Δt
     }
-    //    funktioniert:
 
     
 
@@ -174,11 +178,16 @@ protocol PhysicsEngineDelegate: AnyObject {
 }
 
 final class PhysicsEngine {
+    enum Algorithm {
+        case euler
+        case midpoint
+    }
     /// maximum delta time in seconds for one update
     static let maximumΔt: TimeInterval = 1/30
     
     static let `default` = PhysicsEngine()
     private(set) var world: World
+    var algorithm: Algorithm = .midpoint
     private(set) var spheres: [Sphere] = []
     private(set) var planes: [Plane] = []
     weak var delegate: PhysicsEngineDelegate?
@@ -197,8 +206,15 @@ final class PhysicsEngine {
     }
     
     private func updateSpheres(Δt: Scalar) {
-        for i in spheres.indices {
-            spheres[i].update(Δt: Δt, world: world)
+        switch algorithm {
+        case .euler:
+            for i in spheres.indices {
+                spheres[i].eulerUpdate(Δt: Δt, world: world)
+            }
+        case .midpoint:
+            for i in spheres.indices {
+                spheres[i].midpointUpdate(Δt: Δt, world: world)
+            }
         }
     }
     private func detectAndResolveCollsions(Δt: Scalar) {
@@ -238,6 +254,7 @@ final class PhysicsEngine {
     func setConfig(_ config: PhysicsEngineConfig) {
         self.planes = config.planes
         self.spheres = config.spheres
+        self.algorithm = config.algorithm
         self.world = config.world
     }
     func copy() -> PhysicsEngine {
@@ -245,6 +262,7 @@ final class PhysicsEngine {
         engine.spheres = spheres
         engine.planes = planes
         engine.delegate = delegate
+        engine.algorithm = algorithm
         return engine
     }
 }

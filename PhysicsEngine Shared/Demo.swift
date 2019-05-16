@@ -119,6 +119,7 @@ struct PhysicsEngineConfig {
     var world: World = .zero
     var iterationCount: Int = 1
     var dynamicΔt = true
+    var algorithm = PhysicsEngine.Algorithm.midpoint
 }
 
 extension PhysicsEngineConfig {
@@ -153,6 +154,11 @@ extension PhysicsEngineConfig {
     func setIterationCount(_ count: Int) -> PhysicsEngineConfig {
         var copy = self
         copy.iterationCount = count
+        return copy
+    }
+    func setAlogirthm(_ algorithm: PhysicsEngine.Algorithm) -> PhysicsEngineConfig {
+        var copy = self
+        copy.algorithm = algorithm
         return copy
     }
 }

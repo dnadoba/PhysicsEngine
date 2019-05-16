@@ -734,12 +734,12 @@
                                         <touchBarItem id="qy5-pD-TOK">
                                             <viewController key="viewController" id="3cB-Iu-d6u">
                                                 <segmentedControl key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xvw-sU-TrB">
-                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="30"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="157" height="30"/>
                                                     <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="rmU-P7-nPs">
                                                         <font key="font" metaFont="system"/>
                                                         <segments>
-                                                            <segment label="Δt = 1/60" width="94"/>
-                                                            <segment label="Δt = dynamic" width="94" tag="1"/>
+                                                            <segment label="1/60"/>
+                                                            <segment label=" dynamic" tag="1"/>
                                                         </segments>
                                                     </segmentedCell>
                                                     <connections>
@@ -747,20 +747,38 @@
                                                     </connections>
                                                 </segmentedControl>
                                             </viewController>
-                                            <size key="designTimeSize" width="200" height="30"/>
+                                            <size key="designTimeSize" width="157" height="30"/>
+                                        </touchBarItem>
+                                        <touchBarItem id="jq9-VD-EjM">
+                                            <viewController key="viewController" id="IIA-sS-MOi">
+                                                <segmentedControl key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cNO-Rf-wYv">
+                                                    <rect key="frame" x="0.0" y="0.0" width="160" height="30"/>
+                                                    <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="5T3-vn-jgY">
+                                                        <font key="font" metaFont="system"/>
+                                                        <segments>
+                                                            <segment label="Euler"/>
+                                                            <segment label="Mid Point" tag="1"/>
+                                                        </segments>
+                                                    </segmentedCell>
+                                                    <connections>
+                                                        <action selector="algorithmDidChange:" target="XfG-lQ-9wD" id="pcx-Dd-aKJ"/>
+                                                    </connections>
+                                                </segmentedControl>
+                                            </viewController>
+                                            <size key="designTimeSize" width="160" height="30"/>
                                         </touchBarItem>
                                         <touchBarItem id="kWl-Sn-5Va">
                                             <viewController key="viewController" id="x2s-j4-MdU">
                                                 <textField key="view" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9Fj-EY-UjK">
-                                                    <rect key="frame" x="0.0" y="0.0" width="114" height="19"/>
-                                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Iteration Count:" id="reo-lB-xC4">
+                                                    <rect key="frame" x="0.0" y="0.0" width="77" height="19"/>
+                                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Iterations:" id="reo-lB-xC4">
                                                         <font key="font" usesAppearanceFont="YES"/>
                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
                                             </viewController>
-                                            <size key="designTimeSize" width="110" height="19"/>
+                                            <size key="designTimeSize" width="73" height="19"/>
                                         </touchBarItem>
                                         <sliderTouchBarItem id="2LT-sH-7jh">
                                             <sliderAccessory key="minimumValueAccessory" id="Dgc-4g-8E8">
@@ -770,7 +788,7 @@
                                                 <sliderAccessoryBehavior key="behavior" id="RPm-cP-MIP"/>
                                             </sliderAccessory>
                                             <slider key="slider" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J2o-24-hNi">
-                                                <rect key="frame" x="0.0" y="0.0" width="279" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="191" height="30"/>
                                                 <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="1" maxValue="500" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="vHW-Go-QVh"/>
                                                 <connections>
                                                     <action selector="itterationCountSliderDidChange:" target="XfG-lQ-9wD" id="mx4-b4-JCR"/>
@@ -789,6 +807,7 @@
                         </constraints>
                     </customView>
                     <connections>
+                        <outlet property="algorithmSegmentControl" destination="cNO-Rf-wYv" id="2dE-Ma-dmt"/>
                         <outlet property="dynamicΔtSegmentedControl" destination="Xvw-sU-TrB" id="OtV-4u-qVH"/>
                         <outlet property="gameView" destination="IAE-Sa-NoV" id="BTU-4d-hnj"/>
                         <outlet property="iterationCountSlider" destination="J2o-24-hNi" id="F56-W5-3D3"/>
